@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98a1c4c64f646a644a7d8c3c3dad1123, type: 3}
+  m_Name: PuyoUpgrade_Rows
+  m_EditorClassIdentifier: Assembly-CSharp::UpgradeDefinition
+  ID: PuyoUpgrade_Rows
+  Name: Rows
+  Max: 5
+  ResourceType: 3
+  ScalingMode: 2
+  BaseCost: 10
+  LinearIncrease: 5
+  ExponentialMultiplier: 1.15
+  Costs: 0a0000000c0000000d0000000f00000011000000

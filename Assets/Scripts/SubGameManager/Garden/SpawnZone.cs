@@ -77,10 +77,10 @@ public class SpawnZone : MonoBehaviour
 
     private void TrySpawnRandom()
     {
-        if (Game.Balls.Value <= CurrentMult)
+        if (Game.Bees.Value <= CurrentMult)
             return;
 
-        Game.Balls.Add(-CurrentMult);
+        Game.Bees.Add(-CurrentMult);
         _timer = 0f;
 
         var newBee = SpawnRandom().GetComponent<Bee>();
@@ -89,7 +89,7 @@ public class SpawnZone : MonoBehaviour
 
     private void TrySpawnAtClickX()
     {
-        if (Game.Balls.Value <= CurrentMult)
+        if (Game.Bees.Value <= CurrentMult)
             return;
 
         Vector2 mouseScreenPos = Mouse.current.position.ReadValue();
@@ -108,7 +108,7 @@ public class SpawnZone : MonoBehaviour
             return;
         }
 
-        Game.Balls.Add(-CurrentMult);
+        Game.Bees.Add(-CurrentMult);
 
         float worldX = mouseWorld.x;
 

@@ -23,12 +23,12 @@ public class Nurse : MonoBehaviour
 
 	private void HarvestEgg()
 	{
-		if ((_targetHex?.OccupiedObect) == null)
+		if ((_targetHex?.OccupiedObject) == null)
 		{
 			return;
 		}
 
-		var egg = _targetHex?.OccupiedObect?.GetComponent<Egg>();
+		var egg = _targetHex?.OccupiedObject?.GetComponent<Egg>();
 
 		if (egg != null)
 		{
@@ -40,15 +40,15 @@ public class Nurse : MonoBehaviour
     {
         if (_targetHex == null)
         {
-            _targetHex = Hive.Hexes[new Vector2Int(0, 0)];
+            _targetHex = Hive.HexGrid.Hexes[new Vector2Int(0, 0)];
         }
 
         Hex currentHex = _targetHex;
 
         if (currentHex != null)
         {
-            var fullNeighbors = Hive.GetNeighbors(currentHex)
-                .Where(h => h.OccupiedObect != null)
+            var fullNeighbors = Hive.HexGrid.GetNeighbors(currentHex)
+                .Where(h => h.OccupiedObject != null)
                 .ToList();
 
             if (fullNeighbors.Count > 0)
@@ -60,8 +60,8 @@ public class Nurse : MonoBehaviour
         }
 
         // Step 2. Fallback to any empty hex in hive
-        var emptyHexes = Hive.Hexes.Values
-            .Where(h => h.OccupiedObect == null)
+        var emptyHexes = Hive.HexGrid.Hexes.Values
+            .Where(h => h.OccupiedObject == null)
             .ToList();
 
         if (emptyHexes.Count == 0)

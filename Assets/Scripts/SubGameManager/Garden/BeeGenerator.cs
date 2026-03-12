@@ -30,21 +30,21 @@ public class BeeGenerator : MonoBehaviour
 
     private void Update()
     {
-        FlowerText.text = $"Balls {Game.Balls.Value}";
+        FlowerText.text = $"Balls {Game.Bees.Value}";
     }
 
     public void Load_Clicked()
 	{
-        var amount = Mathf.Min(Game.Bees.Value, 10);
-        Game.Bees.Add(-amount);
-        Game.Balls.Add(amount);
+        var amount = Mathf.Min(Game.Larvae.Value, 10);
+        Game.Larvae.Add(-amount);
+        Game.Bees.Add(amount);
 	}
 
     public void Load_Clicket(int amount)
     {
-        var exchangeAmount = Mathf.Min(Game.Bees.Value, amount);
-        Game.Bees.Add(-exchangeAmount);
-        Game.Balls.Add(exchangeAmount);
+        var exchangeAmount = Mathf.Min(Game.Larvae.Value, amount);
+        Game.Larvae.Add(-exchangeAmount);
+        Game.Bees.Add(exchangeAmount);
     }
 
     private void SetLayerRecursively(GameObject obj, int layer)

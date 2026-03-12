@@ -210,6 +210,21 @@ public class SlotsGame : MonoBehaviour, ISubGame
 			}
 		}
 	}
+
+	public void HandleMouseDown(Vector3 worldPoint)
+	{
+		throw new System.NotImplementedException();
+	}
+
+	public void HandleMouseDrag(Vector3 worldPoint)
+	{
+		throw new System.NotImplementedException();
+	}
+
+	public void HandleMouseUp(Vector3 worldPoint)
+	{
+		throw new System.NotImplementedException();
+	}
 }
 
 [System.Serializable]

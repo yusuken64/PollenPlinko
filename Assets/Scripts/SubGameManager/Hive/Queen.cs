@@ -4,7 +4,7 @@ using UnityEngine;
 public class Queen : MonoBehaviour
 {
     public Hive Hive;
-    public Egg EggPrefab;
+    public HiveItem EggPrefab;
 
     public float MoveSpeed = 2f;
 
@@ -26,7 +26,7 @@ public class Queen : MonoBehaviour
     {
         if (_targetHex == null)
 		{
-            _targetHex = Hive.Hexes[new Vector2Int(0,0)];
+            _targetHex = Hive.HexGrid.Hexes[new Vector2Int(0,0)];
         }
         
         Hex currentHex = _targetHex; // or whatever represents bee's current location
@@ -34,8 +34,8 @@ public class Queen : MonoBehaviour
         // Step 1. Try empty neighbors first
         if (currentHex != null)
         {
-            var emptyNeighbors = Hive.GetNeighbors(currentHex)
-                .Where(h => h.OccupiedObect == null)
+            var emptyNeighbors = Hive.HexGrid.GetNeighbors(currentHex)
+                .Where(h => h.OccupiedObject == null)
                 .ToList();
 
             if (emptyNeighbors.Count > 0)
@@ -47,8 +47,8 @@ public class Queen : MonoBehaviour
         }
 
         // Step 2. Fallback to any empty hex in hive
-        var emptyHexes = Hive.Hexes.Values
-            .Where(h => h.OccupiedObect == null)
+        var emptyHexes = Hive.HexGrid.Hexes.Values
+            .Where(h => h.OccupiedObject == null)
             .ToList();
 
         if (emptyHexes.Count == 0)
@@ -81,14 +81,13 @@ public class Queen : MonoBehaviour
 
     void LayEgg()
     {
-        if (_targetHex == null || _targetHex.OccupiedObect != null)
+        if (_targetHex == null || _targetHex.OccupiedObject != null)
         {
             return;
         }
 
-        var newEgg = Instantiate(EggPrefab, _targetHex.transform.position, Quaternion.identity, _targetHex.transform);
+        var newEgg = Instantiate(EggPrefab, null);
 
-        _targetHex.OccupiedObect = newEgg.gameObject;
-        newEgg.Setup(_targetHex, Hive.Game);
+        _targetHex.SetEgg(newEgg, Hive);
     }
 }

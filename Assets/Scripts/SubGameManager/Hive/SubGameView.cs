@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class SubGameView : MonoBehaviour
 {
-    [SerializeField] public RectTransform _rt;
+    [SerializeField] public RectTransform BackgroundRT;
+    [SerializeField] public RectTransform RawImageRT;
     [SerializeField] private RectTransform _collapsedTarget;
     [SerializeField] private RectTransform _expandedTarget;
     [SerializeField] private float _collapseDuration = 0.3f;
@@ -14,7 +15,7 @@ public class SubGameView : MonoBehaviour
         _subGameManager = subGameManager;
         SubGame = subGameBehaviour as ISubGame;
         _subGameCamera = SubGame?.GameCamera;
-        _rt.gameObject.SetActive(true);
+        BackgroundRT.gameObject.SetActive(true);
     }
 
     public Camera _subGameCamera;
@@ -29,10 +30,10 @@ public class SubGameView : MonoBehaviour
 
     private void TweenTo(RectTransform target)
     {
-        _rt.DOKill();
+        BackgroundRT.DOKill();
         _subGameCamera?.DOKill();
 
-        RectTransform parent = _rt.parent as RectTransform;
+        RectTransform parent = BackgroundRT.parent as RectTransform;
 
         // Get world corners of target
         Vector3[] worldCorners = new Vector3[4];
@@ -54,14 +55,14 @@ public class SubGameView : MonoBehaviour
         // Force non-stretch anchors so it behaves predictably
         Vector2 anchor = new Vector2(0.5f, 0.5f);
 
-        _rt.DOAnchorMin(anchor, _collapseDuration);
-        _rt.DOAnchorMax(anchor, _collapseDuration);
-        _rt.DOPivot(new Vector2(0.5f, 0.5f), _collapseDuration);
-        _rt.DOSizeDelta(size, _collapseDuration);
-        _rt.DOAnchorPos(center, _collapseDuration);
+        BackgroundRT.DOAnchorMin(anchor, _collapseDuration);
+        BackgroundRT.DOAnchorMax(anchor, _collapseDuration);
+        BackgroundRT.DOPivot(new Vector2(0.5f, 0.5f), _collapseDuration);
+        BackgroundRT.DOSizeDelta(size, _collapseDuration);
+        BackgroundRT.DOAnchorPos(center, _collapseDuration);
 
 		if (SubGame?.GameCamera == null) { return; }
-		float cameraSize = GetCameraSizeFor(target, _rt);
+		float cameraSize = GetCameraSizeFor(target, BackgroundRT);
 		_subGameCamera?.DOOrthoSize(cameraSize, _collapseDuration)
 			.SetEase(Ease.InOutSine);
 	}
@@ -106,7 +107,7 @@ public class SubGameView : MonoBehaviour
 
     private float GetHeightInParentSpace(RectTransform target)
     {
-        RectTransform parent = _rt.parent as RectTransform;
+        RectTransform parent = BackgroundRT.parent as RectTransform;
 
         Vector3[] corners = new Vector3[4];
         target.GetWorldCorners(corners);

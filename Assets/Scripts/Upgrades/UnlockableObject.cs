@@ -11,28 +11,21 @@ public class UnlockableObject : MonoBehaviour
     public Func<bool> VisibleCondition;
     public Func<bool> UnlockCondition;
 
-    [Header("Settings")]
-    public bool HideWhenInvisible = true;
+    //[Header("Settings")]
+    //public bool HideWhenInvisible = true;
 
     void Start()
     {
         Refresh();
     }
 
-    void Update()
-    {
-        Refresh();
-    }
-
-    void Refresh()
+    public void Refresh()
     {
         // Visible logic
         if (!IsVisible && VisibleCondition != null && VisibleCondition())
         {
             IsVisible = true;
-
-            if (HideWhenInvisible)
-                gameObject.SetActive(true);
+            gameObject.SetActive(true);
         }
 
         // Unlock logic
@@ -42,7 +35,7 @@ public class UnlockableObject : MonoBehaviour
         }
 
         // If not visible hide object
-        if (!IsVisible && HideWhenInvisible)
+        if (!IsVisible)
         {
             gameObject.SetActive(false);
         }

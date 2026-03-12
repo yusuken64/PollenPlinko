@@ -12,7 +12,7 @@ public class UI : MonoBehaviour
 
 	private void Start()
     {
-        ResourceDisplay_Bees.Register(Game.Bees);
+        ResourceDisplay_Bees.Register(Game.Larvae);
         ResourceDisplay_Pollen.Register(Game.Pollen);
         ResourceDisplay_Nectar.Register(Game.Nectar);
         ResourceDisplay_Honey.Register(Game.Honey);

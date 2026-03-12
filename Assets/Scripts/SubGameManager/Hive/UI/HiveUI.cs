@@ -7,9 +7,11 @@ public class HiveUI : MonoBehaviour
 
 	public UpgradeButton UpgradeButton_AddHex;
 	public UpgradeButton UpgradeButton_AddNurse;
+	public UpgradeButton UpgradeButton_AddHouse;
 
 	public int AddedHexes;
     public int AddedNurses;
+    public int AddedHouses;
 
     public void Start()
 	{
@@ -35,7 +37,7 @@ public class HiveUI : MonoBehaviour
                     cost);
 
                 AddedHexes++;
-                Hive.AddHex();
+                Hive.HexGrid.AddHex();
             }
         );
 
@@ -64,11 +66,42 @@ public class HiveUI : MonoBehaviour
                 Hive.SpawnNurse();
             }
         );
+
+        UpgradeButton_AddHouse.Setup(
+            getLevel: () => AddedHouses,
+            canPurchase: (level) =>
+            {
+                if (Hive.HexGrid.GetEmptyHex() == null)
+				{
+                    return false;
+				}
+
+                if (level >= UpgradeButton_AddHouse.UpgradeDefinition.Max)
+                    return false;
+
+                int cost = UpgradeButton_AddHouse.UpgradeDefinition.Costs[level];
+
+                return Game.CanAfford(
+                    UpgradeButton_AddHouse.UpgradeDefinition.ResourceType,
+                    cost);
+            },
+            purchase: (level) =>
+            {
+                int cost = UpgradeButton_AddHouse.UpgradeDefinition.Costs[level];
+
+                Game.Spend(
+                    UpgradeButton_AddHouse.UpgradeDefinition.ResourceType,
+                    cost);
+
+                AddedHouses++;
+                Hive.SpawnHouse();
+            }
+        );
     }
 
 	public void AddHex_Clicked()
 	{
-		Hive.AddHex();
+		Hive.HexGrid.AddHex();
 	}
 
 	public void AddNurse_Clicked()

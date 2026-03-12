@@ -553,6 +553,18 @@ Win {Win}";
         _cascading = false;
         _waitTimer = 0f;
     }
+
+	public void HandleMouseDown(Vector3 worldPoint)
+	{
+	}
+
+	public void HandleMouseDrag(Vector3 worldPoint)
+	{
+	}
+
+	public void HandleMouseUp(Vector3 worldPoint)
+	{
+	}
 }
 
 public enum PuyoColor

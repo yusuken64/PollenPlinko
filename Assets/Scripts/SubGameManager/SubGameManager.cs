@@ -17,6 +17,7 @@ public class SubGameManager : MonoBehaviour
         }
 
         SubGameClicked(SubGameViews[0]);
+        canvas = _activeView.BackgroundRT.GetComponentInParent<Canvas>();
     }
 
     public void SubGameClicked(SubGameView clickedView)
@@ -40,59 +41,81 @@ public class SubGameManager : MonoBehaviour
         _activeView.Expand();
     }
 
-    public Canvas Canvas;
-
     [SerializeField] private float zoomSpeed = 5f;
     [SerializeField] private float minSize = 2f;
     [SerializeField] private float maxSize = 20f;
+	private Canvas canvas;
 
-    public void Update()
-	{
-        if (_activeView == null) { return; }
+	public void Update()
+    {
+        if (_activeView == null) return;
 
         if (!IsPointerInsideMainViewport())
-        {
             return;
-        }
 
-        float scroll = Mouse.current.scroll.ReadValue().y;
+        var mouse = Mouse.current;
+
+        float scroll = mouse.scroll.ReadValue().y;
         var subGameCamera = _activeView._subGameCamera;
 
         if (Mathf.Abs(scroll) > 0.01f)
         {
-            // Scroll up usually gives positive value depending on platform
             subGameCamera.orthographicSize -= scroll * zoomSpeed * Time.deltaTime;
-
             subGameCamera.orthographicSize =
                 Mathf.Clamp(subGameCamera.orthographicSize, minSize, maxSize);
         }
 
-        if (!Mouse.current.leftButton.wasPressedThisFrame)
-        {
+        if (!TryGetWorldPoint(out Vector3 worldPoint))
             return;
+
+        if (mouse.leftButton.wasPressedThisFrame)
+        {
+            _activeView.SubGame?.HandleMouseDown(worldPoint);
         }
+        else if (mouse.leftButton.isPressed)
+        {
+            _activeView.SubGame?.HandleMouseDrag(worldPoint);
+        }
+        else if (mouse.leftButton.wasReleasedThisFrame)
+        {
+            _activeView.SubGame?.HandleMouseUp(worldPoint);
+        }
+    }
+
+    bool TryGetWorldPoint(out Vector3 worldPoint)
+    {
+        worldPoint = default;
 
         Vector2 mousePos = Mouse.current.position.ReadValue();
-        if (!RectTransformUtility.ScreenPointToLocalPointInRectangle(
-            _activeView._rt,
-            mousePos,
-            Canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : Canvas.worldCamera,
-            out Vector2 localPoint))
-            return;
 
-        Rect rect = _activeView._rt.rect;
+        var rt = _activeView.RawImageRT;
+        var cam = _activeView._subGameCamera;
 
-        float u = (localPoint.x - rect.xMin) / rect.width;
-        float v = (localPoint.y - rect.yMin) / rect.height;
+        Vector3[] corners = new Vector3[4];
+        rt.GetWorldCorners(corners);
 
-        // Optional clamp safety
+        Vector2 bottomLeft = RectTransformUtility.WorldToScreenPoint(null, corners[0]);
+        Vector2 topRight = RectTransformUtility.WorldToScreenPoint(null, corners[2]);
+
+        Rect screenRect = new Rect(
+            bottomLeft.x,
+            bottomLeft.y,
+            topRight.x - bottomLeft.x,
+            topRight.y - bottomLeft.y
+        );
+
+        float u = (mousePos.x - screenRect.xMin) / screenRect.width;
+        float v = (mousePos.y - screenRect.yMin) / screenRect.height;
+
         if (u < 0 || u > 1 || v < 0 || v > 1)
-            return;
+            return false;
 
-        // Feed UV into hive camera raycast
-        Vector3 worldPoint = subGameCamera.ViewportToWorldPoint(new Vector3(u, v, 0));
+        float depth = -cam.transform.position.z;
 
-        _activeView.SubGame?.HandleUpdate(worldPoint);
+        worldPoint = cam.ViewportToWorldPoint(new Vector3(u, v, depth));
+        worldPoint.z = 0;
+
+        return true;
     }
 
     private bool IsPointerInsideMainViewport()
@@ -100,9 +123,9 @@ public class SubGameManager : MonoBehaviour
         Vector2 mousePos = Mouse.current.position.ReadValue();
 
         return RectTransformUtility.RectangleContainsScreenPoint(
-            _activeView._rt,
+            _activeView.BackgroundRT,
             mousePos,
-            Canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : Canvas.worldCamera
+            canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : canvas.worldCamera
         );
     }
 

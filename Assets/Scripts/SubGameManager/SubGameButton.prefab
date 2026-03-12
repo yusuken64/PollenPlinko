@@ -45,6 +45,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7135650434613844698}
   - component: {fileID: 2164539034297821626}
+  - component: {fileID: 9059644896086083760}
   - component: {fileID: 2893763754157284939}
   - component: {fileID: 8709112283899364424}
   - component: {fileID: 6603212195843383288}
@@ -89,7 +90,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3219821b7ba8eba40bc07286fe31d589, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SubGameView
-  _rt: {fileID: 3649196415046977450}
+  BackgroundRT: {fileID: 3649196415046977450}
+  RawImageRT: {fileID: 4703206894001382752}
   _collapsedTarget: {fileID: 5144193645770045576}
   _expandedTarget: {fileID: 0}
   _collapseDuration: 0.3
@@ -97,6 +99,18 @@ MonoBehaviour:
   IsCollapsed: 0
   subGameBehaviour: {fileID: 0}
   UIObject: {fileID: 0}
+--- !u!114 &9059644896086083760
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2419966202542557674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60d9d15e9527a2749bae2f32f29ffacb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UnlockableObject
 --- !u!222 &2893763754157284939
 CanvasRenderer:
   m_ObjectHideFlags: 0

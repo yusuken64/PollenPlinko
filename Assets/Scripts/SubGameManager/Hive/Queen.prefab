@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Queen
   Hive: {fileID: 0}
-  EggPrefab: {fileID: 4763989055718300407, guid: 4a79a30df2d7c134f8c0d3a5c0b012a2, type: 3}
+  EggPrefab: {fileID: 4843644982296706761, guid: 4a79a30df2d7c134f8c0d3a5c0b012a2, type: 3}
   MoveSpeed: 0.5
 --- !u!1 &1918218522574254909
 GameObject:

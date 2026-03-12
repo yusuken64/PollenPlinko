@@ -1,205 +1,130 @@
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class Hive : MonoBehaviour, ISubGame
 {
-    public Hex HexPrefab;
-    public GameObject StartPositionObject;
     public Game Game;
     public Camera HiveCamera;
-    public HiveView HiveView;
+    public HexGrid HexGrid;
 
-    public float hexWidth = 1;
-    public float hexHeight = 1;
-
-    public Dictionary<Vector2Int, Hex> Hexes = new Dictionary<Vector2Int, Hex>();
-
-    public RectTransform TextureRectTransform;
-    public Canvas Canvas;
     [SerializeField] private float zoomSpeed = 5f;
     [SerializeField] private float minSize = 2f;
     [SerializeField] private float maxSize = 20f;
 
     public Nurse NursePrefab;
+    public House HousePrefab;
 
     public Camera GameCamera => HiveCamera;
 
+    public LayerMask HiveItemLayerMask;
+    public LayerMask HexLayerMask;
+
 	void Start()
     {
-        GenerateHexRing(1);
-    }
-
-    void GenerateHexRing(int radius)
-    {
-        Vector3 origin = StartPositionObject.transform.position;
-
-        for (int q = -radius; q <= radius; q++)
-        {
-            int r1 = Mathf.Max(-radius, -q - radius);
-            int r2 = Mathf.Min(radius, -q + radius);
-
-            for (int r = r1; r <= r2; r++)
-            {
-                Vector3 worldPos = AxialToWorld(q, r, hexWidth, hexHeight, origin);
-
-                Hex newHex = Instantiate(HexPrefab, worldPos, Quaternion.identity, transform);
-                newHex.Setup(Game);
-
-				Vector2Int vector2Int = new Vector2Int(q, r);
-				Hexes[vector2Int] = newHex;
-                newHex.Coord = vector2Int;
-            }
-        }
-    }
-    public void AddHex()
-    {
-        Vector3 origin = StartPositionObject.transform.position;
-
-        // Determine max existing ring
-        int maxRadius = 0;
-
-        foreach (var key in Hexes.Keys)
-        {
-            int dist = HexDistance(Vector2Int.zero, key);
-            if (dist > maxRadius)
-                maxRadius = dist;
-        }
-
-        // Scan rings from inner to outer
-        for (int radius = 0; radius <= maxRadius + 1; radius++)
-        {
-            int expected = RingSize(radius);
-
-            int actual = Hexes.Keys.Count(k => HexDistance(Vector2Int.zero, k) == radius);
-
-            if (actual < expected)
-            {
-                // Find a missing coordinate on this ring
-                foreach (Vector2Int coord in GetRingCoordinates(radius))
-                {
-                    if (!Hexes.ContainsKey(coord))
-                    {
-                        Vector3 worldPos = AxialToWorld(coord.x, coord.y, hexWidth, hexHeight, origin);
-
-                        Hex newHex = Instantiate(HexPrefab, worldPos, Quaternion.identity, transform);
-                        newHex.Setup(Game);
-
-                        Hexes[coord] = newHex;
-                        newHex.Coord = coord;
-                        return;
-                    }
-                }
-            }
-        }
-    }
-    public IEnumerable<Hex> GetNeighbors(Hex hex)
-    {
-        if (hex == null)
-            yield break;
-
-        Vector2Int[] dirs =
-        {
-        new Vector2Int(1, 0),
-        new Vector2Int(1, -1),
-        new Vector2Int(0, -1),
-        new Vector2Int(-1, 0),
-        new Vector2Int(-1, 1),
-        new Vector2Int(0, 1)
-    };
-
-        foreach (var dir in dirs)
-        {
-            Vector2Int neighborCoord = hex.Coord + dir;
-
-            if (Hexes.TryGetValue(neighborCoord, out Hex neighbor))
-                yield return neighbor;
-        }
-    }
-
-    IEnumerable<Vector2Int> GetRingCoordinates(int radius)
-    {
-        if (radius == 0)
-        {
-            yield return Vector2Int.zero;
-            yield break;
-        }
-
-        // Start at (0 - radius, radius)
-        int q = -radius;
-        int r = radius;
-
-        // Six hex directions in axial coords
-        Vector2Int[] dirs =
-        {
-        new Vector2Int(1, 0),
-        new Vector2Int(1, -1),
-        new Vector2Int(0, -1),
-        new Vector2Int(-1, 0),
-        new Vector2Int(-1, 1),
-        new Vector2Int(0, 1)
-    };
-
-        // Walk 6 sides, each length = radius
-        Vector2Int pos = new Vector2Int(q, r);
-
-        foreach (var dir in dirs)
-        {
-            for (int i = 0; i < radius; i++)
-            {
-                yield return pos;
-                pos += dir;
-            }
-        }
-    }
-
-    int HexDistance(Vector2Int a, Vector2Int b)
-    {
-        // axial hex distance
-        int dq = a.x - b.x;
-        int dr = a.y - b.y;
-        return (Mathf.Abs(dq) + Mathf.Abs(dr) + Mathf.Abs(dq + dr)) / 2;
-    }
-
-    int RingSize(int radius)
-    {
-        return radius == 0 ? 1 : 6 * radius;
-    }
-
-    Vector3 AxialToWorld(int q, int r, float width, float height, Vector3 origin)
-    {
-        // Pointy-top layout conversion
-        float x = width * (0.75f * q);
-        float y = height * (r + q * 0.5f);
-
-        return new Vector3(origin.x + x, origin.y + y, origin.z);
+        HexGrid.GenerateHexRing(1);
     }
 
     public void HandleUpdate(Vector3 worldPoint)
     {
-        RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero);
+        //RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero);
+
+        //if (hit.collider != null)
+        //{
+        //    hit.collider.GetComponent<Egg>()?.Hatch();
+        //}
+    }
+
+    HiveItem _selectedItem;
+    Vector3 _mouseDownPos;
+    bool _dragging;
+
+    float dragThreshold = 0.2f;
+
+    public void HandleMouseDown(Vector3 worldPoint)
+    {
+        RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero, Mathf.Infinity, HiveItemLayerMask);
 
         if (hit.collider != null)
         {
-            hit.collider.GetComponent<Egg>()?.Hatch();
+            _selectedItem = hit.collider.GetComponent<HiveItem>();
+            _mouseDownPos = worldPoint;
+            _dragging = false;
         }
     }
 
-    private bool IsPointerInsideHiveViewport()
-    {
-        Vector2 mousePos = Mouse.current.position.ReadValue();
+    private  Hex _lastValidHex;
 
-        return RectTransformUtility.RectangleContainsScreenPoint(
-            TextureRectTransform,
-            mousePos,
-            Canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : Canvas.worldCamera
-        );
+    public void HandleMouseDrag(Vector3 worldPoint)
+    {
+        if (_selectedItem == null) return;
+
+        if (!_dragging)
+        {
+            float dist = Vector3.Distance(worldPoint, _mouseDownPos);
+            if (dist > dragThreshold)
+            {
+                _dragging = true;
+            }
+        }
+
+        if (_dragging)
+        {
+            // Move visually with mouse
+            _selectedItem.transform.position = worldPoint;
+
+            // Check hex under mouse
+            Hex hoveredHex = GetHexAtWorldPoint(worldPoint);
+
+            if (hoveredHex != null)
+            {
+                _lastValidHex = hoveredHex;
+            }
+        }
+    }
+
+    public void HandleMouseUp(Vector3 worldPoint)
+    {
+        if (_selectedItem == null) return;
+
+        if (!_dragging)
+        {
+            _selectedItem.HandleClick();
+        }
+        else if (_lastValidHex != null)
+        {
+            _selectedItem.transform.position = _lastValidHex.transform.position;
+            _lastValidHex.SetEgg(_selectedItem, this);
+        }
+
+        _selectedItem = null;
+        _dragging = false;
+    }
+
+    Hex GetHexAtWorldPoint(Vector3 worldPoint)
+    {
+        RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero, Mathf.Infinity, HexLayerMask);
+
+        if (hit.collider != null)
+        {
+            return hit.collider.GetComponent<Hex>();
+        }
+
+        return null;
     }
 
     public void SpawnNurse()
 	{
         var newNurse = Instantiate(NursePrefab, this.transform);
         newNurse.Hive = this;
-	}
+    }
+
+    public void SpawnHouse()
+    {
+        var newHouse = Instantiate(HousePrefab, this.transform);
+        var hex = HexGrid.GetEmptyHex();
+
+        if (hex != null)
+        {
+            newHouse.Setup(hex, Game);
+        }
+    }
 }

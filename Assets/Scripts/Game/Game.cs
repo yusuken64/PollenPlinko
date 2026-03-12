@@ -7,8 +7,8 @@ public class Game : MonoBehaviour
 	public FlowerSpawnZone FlowerSpawnZone;
 
 	[Header("Resources")]
+	public Resource Larvae = new();
 	public Resource Bees = new();
-	public Resource Balls = new();
 	public Resource Pollen = new();
 	public Resource Nectar = new();
 	public Resource Honey = new();
@@ -24,10 +24,10 @@ public class Game : MonoBehaviour
 		switch (resourceType)
 		{
 			case ResourceType.Larvae:
-				return Bees.Value >= amount;
+				return Larvae.Value >= amount;
 				break;
 			case ResourceType.Bees:
-				return Balls.Value >= amount;
+				return Bees.Value >= amount;
 				break;
 			case ResourceType.Pollen:
 				return Pollen.Value >= amount;
@@ -53,10 +53,10 @@ public class Game : MonoBehaviour
 		switch (resourceType)
 		{
 			case ResourceType.Larvae:
-				Bees.Add(-amount);
+				Larvae.Add(-amount);
 				break;
 			case ResourceType.Bees:
-				Balls.Add(-amount);
+				Bees.Add(-amount);
 				break;
 			case ResourceType.Pollen:
 				Pollen.Add(-amount);
@@ -80,10 +80,10 @@ public class Game : MonoBehaviour
 		switch (resourceType)
 		{
 			case ResourceType.Larvae:
-				Bees.Add(amount);
+				Larvae.Add(amount);
 				break;
 			case ResourceType.Bees:
-				Balls.Add(amount);
+				Bees.Add(amount);
 				break;
 			case ResourceType.Pollen:
 				Pollen.Add(amount);
@@ -151,7 +151,7 @@ public class Game : MonoBehaviour
 
 	public void Ammo_Click()
 	{
-		Bees.Value += 5;
+		Larvae.Value += 5;
 	}
 }
 

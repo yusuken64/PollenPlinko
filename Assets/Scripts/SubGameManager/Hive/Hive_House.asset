@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 98a1c4c64f646a644a7d8c3c3dad1123, type: 3}
-  m_Name: Test_NewUpgrade
+  m_Name: Hive_House
   m_EditorClassIdentifier: Assembly-CSharp::UpgradeDefinition
-  ID: Test
-  Name: Hexes
+  ID: Hive_House
+  Name: House
   Max: 99
   ResourceType: 2
   ScalingMode: 1

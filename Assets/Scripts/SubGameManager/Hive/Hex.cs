@@ -8,22 +8,34 @@ public class Hex : MonoBehaviour
     public float fillrate;
 	private Game _game;
 
-    public GameObject OccupiedObect;
+    public GameObject OccupiedObject;
 
     public Vector2Int Coord;
-
-	private void Filled()
-    {
-        _game.Ammo_Click();
-    }
 
     internal void Setup(Game game)
 	{
         _game = game;
 	}
 
-    public void Click()
-	{
-        FillImage.fillAmount += 0.2f;
+    public void SetEgg(HiveItem egg, Hive hive)
+    {
+        if (OccupiedObject != null)
+        {
+            HiveItem existingItem = OccupiedObject.GetComponent<HiveItem>();
+            if (existingItem != null)
+            {
+                // Save existing item's current hex
+                Hex existingItemHex = existingItem.CurrentHex;
+
+                // Place existing item back to its hex
+                if (existingItemHex != null)
+                {
+                    existingItem.Setup(egg.CurrentHex, hive.Game);
+                }
+            }
+        }
+
+        // Place the new egg on this hex
+        egg.Setup(this, hive.Game);
     }
 }

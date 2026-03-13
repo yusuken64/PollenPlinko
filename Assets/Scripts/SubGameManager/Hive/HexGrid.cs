@@ -13,6 +13,9 @@ public class HexGrid : MonoBehaviour
     public Dictionary<Vector2Int, Hex> Hexes = new Dictionary<Vector2Int, Hex>();
     public Hex HexPrefab;
 
+    public HiveItem SelectedItem;
+    public Hex LastValidHex;
+
     public void GenerateHexRing(int radius)
     {
         foreach (Transform child in transform)
@@ -82,6 +85,41 @@ public class HexGrid : MonoBehaviour
             }
         }
     }
+
+    public Hex GetEmptyHexNear(Hex start)
+    {
+        if (start.OccupiedObject == null)
+		{
+            return start;
+		}
+
+        Queue<Hex> queue = new Queue<Hex>();
+        HashSet<Hex> visited = new HashSet<Hex>();
+
+        queue.Enqueue(start);
+        visited.Add(start);
+
+        while (queue.Count > 0)
+        {
+            var current = queue.Dequeue();
+
+            foreach (var neighbor in GetNeighbors(current))
+            {
+                if (visited.Contains(neighbor))
+                    continue;
+
+                visited.Add(neighbor);
+
+                if (neighbor.OccupiedObject == null)
+                    return neighbor;
+
+                queue.Enqueue(neighbor);
+            }
+        }
+
+        return null;
+    }
+
     public IEnumerable<Hex> GetNeighbors(Hex hex)
     {
         if (hex == null)
@@ -171,5 +209,95 @@ public class HexGrid : MonoBehaviour
 
         int index = Random.Range(0, emptyHexes.Count);
         return emptyHexes[index];
+    }
+
+    public List<Hex> GetMergeCluster(Hex startHex, HiveItem originalItem)
+    {
+        List<Hex> results = new List<Hex>();
+
+        Vector2Int[] directions =
+        {
+            new Vector2Int(1, 0),
+            new Vector2Int(-1, 0),
+            new Vector2Int(0, 1),
+            new Vector2Int(0, -1),
+            new Vector2Int(1, -1),
+            new Vector2Int(-1, 1)
+        };
+
+        Queue<Vector2Int> queue = new Queue<Vector2Int>();
+        HashSet<Vector2Int> visited = new HashSet<Vector2Int>();
+
+        Vector2Int? hexPosition = GetPositionByHex(startHex);
+        if (hexPosition == null) { return results; }
+        var startPos = hexPosition.Value;
+
+        queue.Enqueue(startPos);
+        visited.Add(startPos);
+        results.Add(startHex);
+
+        while (queue.Count > 0)
+        {
+            var pos = queue.Dequeue();
+
+            foreach (var dir in directions)
+            {
+                Vector2Int neighborPos = pos + dir;
+
+                if (visited.Contains(neighborPos))
+                    continue;
+
+                visited.Add(neighborPos);
+
+                if (!Hexes.TryGetValue(neighborPos, out Hex hex))
+                    continue;
+
+                if (hex.OccupiedObject == null)
+                    continue;
+
+                HiveItem item = hex.OccupiedObject;
+                if (item == null || item == originalItem)
+                    continue;
+
+                if (!item.CanMerge(originalItem))
+                    continue;
+
+                results.Add(hex);
+                queue.Enqueue(neighborPos);
+            }
+        }
+
+        return results;
+    }
+
+    public Vector2Int? GetPositionByHex(Hex targetHex)
+    {
+        foreach (var (pos, hex) in Hexes)
+        {
+            if (hex == targetHex)
+                return pos;
+        }
+
+        return null;
+    }
+
+    internal void PreviewHover(Hex hoveredHex, HiveItem selectedItem)
+    {
+        ClearHighlight();
+
+        var cluster = GetMergeCluster(hoveredHex, selectedItem);
+
+        foreach (var hex in cluster)
+        {
+            hex.Highlight.gameObject.SetActive(true);
+        }
+    }
+
+    public void ClearHighlight()
+    {
+        foreach (var kvp in Hexes)
+        {
+            kvp.Value.Highlight.gameObject.SetActive(false);
+        }
     }
 }

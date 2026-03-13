@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 
 public class Hive : MonoBehaviour, ISubGame
@@ -18,26 +19,16 @@ public class Hive : MonoBehaviour, ISubGame
     public LayerMask HiveItemLayerMask;
     public LayerMask HexLayerMask;
 
-	void Start()
+    public MergeManager MergeManager;
+
+    public Vector3 _mouseDownPos;
+    public bool _dragging;
+    public float dragThreshold = 0.2f;
+
+    void Start()
     {
         HexGrid.GenerateHexRing(1);
     }
-
-    public void HandleUpdate(Vector3 worldPoint)
-    {
-        //RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero);
-
-        //if (hit.collider != null)
-        //{
-        //    hit.collider.GetComponent<Egg>()?.Hatch();
-        //}
-    }
-
-    HiveItem _selectedItem;
-    Vector3 _mouseDownPos;
-    bool _dragging;
-
-    float dragThreshold = 0.2f;
 
     public void HandleMouseDown(Vector3 worldPoint)
     {
@@ -45,17 +36,15 @@ public class Hive : MonoBehaviour, ISubGame
 
         if (hit.collider != null)
         {
-            _selectedItem = hit.collider.GetComponent<HiveItem>();
+            HexGrid.SelectedItem = hit.collider.GetComponent<HiveItem>();
             _mouseDownPos = worldPoint;
             _dragging = false;
         }
     }
 
-    private  Hex _lastValidHex;
-
     public void HandleMouseDrag(Vector3 worldPoint)
     {
-        if (_selectedItem == null) return;
+        if (HexGrid.SelectedItem == null) return;
 
         if (!_dragging)
         {
@@ -69,33 +58,42 @@ public class Hive : MonoBehaviour, ISubGame
         if (_dragging)
         {
             // Move visually with mouse
-            _selectedItem.transform.position = worldPoint;
+            HexGrid.SelectedItem.transform.position = worldPoint;
 
             // Check hex under mouse
             Hex hoveredHex = GetHexAtWorldPoint(worldPoint);
 
+            HexGrid.PreviewHover(hoveredHex, HexGrid.SelectedItem);
+
             if (hoveredHex != null)
             {
-                _lastValidHex = hoveredHex;
+                HexGrid.LastValidHex = hoveredHex;
             }
         }
     }
 
     public void HandleMouseUp(Vector3 worldPoint)
     {
-        if (_selectedItem == null) return;
+        if (HexGrid.SelectedItem == null) return;
 
         if (!_dragging)
         {
-            _selectedItem.HandleClick();
+            HexGrid.SelectedItem.HandleClick();
         }
-        else if (_lastValidHex != null)
+        else if (HexGrid.LastValidHex != null)
         {
-            _selectedItem.transform.position = _lastValidHex.transform.position;
-            _lastValidHex.SetEgg(_selectedItem, this);
+            HexGrid.SelectedItem.transform.position = HexGrid.LastValidHex.transform.position;
+            HexGrid.LastValidHex.SetItem(HexGrid.SelectedItem, this);
+
+            var cluster = HexGrid.GetMergeCluster(HexGrid.LastValidHex, HexGrid.SelectedItem);
+            if (cluster.Count() >= 3)
+            {
+                StartCoroutine(MergeManager.MergeRoutine(cluster, HexGrid.LastValidHex, HexGrid.SelectedItem));
+            }
         }
 
-        _selectedItem = null;
+        HexGrid.ClearHighlight();
+        HexGrid.SelectedItem = null;
         _dragging = false;
     }
 
@@ -124,7 +122,7 @@ public class Hive : MonoBehaviour, ISubGame
 
         if (hex != null)
         {
-            newHouse.Setup(hex, Game);
+            newHouse.Setup(hex, Game, 1);
         }
     }
 }

@@ -51,7 +51,6 @@ public class SpawnZone : MonoBehaviour
     private void Update()
     {
         HandleAutoSpawn();
-        //HandleClickSpawn();
     }
 
     private void HandleAutoSpawn()
@@ -60,80 +59,67 @@ public class SpawnZone : MonoBehaviour
 
         if (_timer >= spawnInterval)
         {
-            TrySpawnRandom();
+            Vector3 pos = GetRandomSpawnPosition();
+            TrySpawn(pos);
+            _timer = 0f;
         }
     }
 
-    private void HandleClickSpawn()
+    public void HandleClickSpawn(Vector3 worldPoint)
     {
-        if (Mouse.current == null)
-            return;
-
-        if (Mouse.current.leftButton.wasPressedThisFrame)
-        {
-            TrySpawnAtClickX();
-        }
+        if (Game.Larvae.Value > 0)
+		{
+            Game.Larvae.Add(-1);
+            Game.Bees.Add(1);
+		}
+        var spawnPos = GetMouseSpawnPosition(worldPoint);
+        TrySpawn(spawnPos);
     }
 
-    private void TrySpawnRandom()
+    private void TrySpawn(Vector3 position)
     {
         if (Game.Bees.Value <= CurrentMult)
             return;
 
         Game.Bees.Add(-CurrentMult);
-        _timer = 0f;
 
-        var newBee = SpawnRandom().GetComponent<Bee>();
-        newBee.Setup(Game, CurrentMult);
+        SpawnBee(position);
     }
 
-    private void TrySpawnAtClickX()
+    private Bee SpawnBee(Vector3 pos)
     {
-        if (Game.Bees.Value <= CurrentMult)
-            return;
+        var bee = Instantiate(ballPrefab, pos, Quaternion.identity, transform)
+            .GetComponent<Bee>();
 
-        Vector2 mouseScreenPos = Mouse.current.position.ReadValue();
+        bee.Setup(Game, CurrentMult);
 
-        Vector3 mouseWorld = Camera.main.ScreenToWorldPoint(
-            new Vector3(mouseScreenPos.x, mouseScreenPos.y,
-                        -Camera.main.transform.position.z)
-        );
+        return bee;
+    }
+
+    private Vector3 GetMouseSpawnPosition(Vector3 mousePos)
+    {
+        var spawn = GetRandomSpawnPosition();
 
         Rect rect = _rectTransform.rect;
+        Vector3 local = _rectTransform.InverseTransformPoint(mousePos);
 
-        Vector3 localClick = _rectTransform.InverseTransformPoint(mouseWorld);
+        local.x = Mathf.Clamp(local.x, rect.xMin, rect.xMax);
 
-        if (localClick.x < rect.xMin || localClick.x > rect.xMax)
-        {
-            return;
-        }
+        spawn.x = _rectTransform.TransformPoint(local).x;
 
-        Game.Bees.Add(-CurrentMult);
-
-        float worldX = mouseWorld.x;
-
-        Vector3 zoneCenterWorld = _rectTransform.TransformPoint(_rectTransform.rect.center);
-        float worldY = zoneCenterWorld.y;
-
-        Vector3 spawnPos = new Vector3(worldX, worldY, 0f);
-
-        var newBee = Instantiate(ballPrefab, spawnPos, Quaternion.identity, this.transform)
-                     .GetComponent<Bee>();
-
-        newBee.Setup(Game, CurrentMult);
+        return spawn;
     }
 
-    private GameObject SpawnRandom()
+    private Vector3 GetRandomSpawnPosition()
     {
         Rect rect = _rectTransform.rect;
 
         float x = Random.Range(rect.xMin, rect.xMax);
         float y = Random.Range(rect.yMin, rect.yMax);
 
-        Vector3 localPoint = new Vector3(x, y, 0f);
-        Vector3 worldPoint = _rectTransform.TransformPoint(localPoint);
+        Vector3 local = new Vector3(x, y, 0f);
 
-        return Instantiate(ballPrefab, worldPoint, Quaternion.identity, this.transform);
+        return _rectTransform.TransformPoint(local);
     }
 
     public void SetMult(int mult)

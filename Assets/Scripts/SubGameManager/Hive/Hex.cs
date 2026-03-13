@@ -4,38 +4,35 @@ using UnityEngine.UI;
 
 public class Hex : MonoBehaviour
 {
-    public Image FillImage;
-    public float fillrate;
-	private Game _game;
+    public GameObject Highlight;
+    private Game _game;
 
-    public GameObject OccupiedObject;
+    public HiveItem OccupiedObject;
 
     public Vector2Int Coord;
 
     internal void Setup(Game game)
-	{
+    {
         _game = game;
-	}
+    }
 
-    public void SetEgg(HiveItem egg, Hive hive)
+    public void SetItem(HiveItem item, Hive hive)
     {
         if (OccupiedObject != null)
         {
-            HiveItem existingItem = OccupiedObject.GetComponent<HiveItem>();
+            HiveItem existingItem = OccupiedObject;
             if (existingItem != null)
             {
-                // Save existing item's current hex
                 Hex existingItemHex = existingItem.CurrentHex;
 
-                // Place existing item back to its hex
                 if (existingItemHex != null)
                 {
-                    existingItem.Setup(egg.CurrentHex, hive.Game);
+                    existingItem.Setup(item.CurrentHex, hive.Game, item.Level);
                 }
             }
         }
 
         // Place the new egg on this hex
-        egg.Setup(this, hive.Game);
+        item.Setup(this, hive.Game, item.Level);
     }
 }

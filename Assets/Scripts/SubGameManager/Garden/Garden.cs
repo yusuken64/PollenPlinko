@@ -2,11 +2,13 @@ using UnityEngine;
 
 public class Garden : MonoBehaviour, ISubGame
 {
+	public SpawnZone SpawnZone;
 	public Camera GardenCamera;
 	public Camera GameCamera => GardenCamera;
 
 	public void HandleMouseDown(Vector3 worldPoint)
 	{
+		SpawnZone.HandleClickSpawn(worldPoint);
 	}
 
 	public void HandleMouseDrag(Vector3 worldPoint)
@@ -14,10 +16,6 @@ public class Garden : MonoBehaviour, ISubGame
 	}
 
 	public void HandleMouseUp(Vector3 worldPoint)
-	{
-	}
-
-	public void HandleUpdate(Vector3 worldPoint)
 	{
 	}
 }

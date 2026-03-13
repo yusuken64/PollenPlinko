@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 public class SubGameManager : MonoBehaviour
@@ -64,6 +65,11 @@ public class SubGameManager : MonoBehaviour
             subGameCamera.orthographicSize =
                 Mathf.Clamp(subGameCamera.orthographicSize, minSize, maxSize);
         }
+        
+        if (IsPointerOverUI())
+		{
+            return;
+		}
 
         if (!TryGetWorldPoint(out Vector3 worldPoint))
             return;
@@ -80,6 +86,25 @@ public class SubGameManager : MonoBehaviour
         {
             _activeView.SubGame?.HandleMouseUp(worldPoint);
         }
+    }
+
+    bool IsPointerOverUI()
+    {
+        // Works for mouse
+        if (EventSystem.current.IsPointerOverGameObject())
+            return true;
+
+        // Works for touch input (mobile)
+        if (Input.touchCount > 0)
+        {
+            foreach (Touch touch in Input.touches)
+            {
+                if (EventSystem.current.IsPointerOverGameObject(touch.fingerId))
+                    return true;
+            }
+        }
+
+        return false;
     }
 
     bool TryGetWorldPoint(out Vector3 worldPoint)
@@ -128,5 +153,4 @@ public class SubGameManager : MonoBehaviour
             canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : canvas.worldCamera
         );
     }
-
 }

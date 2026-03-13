@@ -88,6 +88,6 @@ public class Queen : MonoBehaviour
 
         var newEgg = Instantiate(EggPrefab, null);
 
-        _targetHex.SetEgg(newEgg, Hive);
+        _targetHex.SetItem(newEgg, Hive);
     }
 }

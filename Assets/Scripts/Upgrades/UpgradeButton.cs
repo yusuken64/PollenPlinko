@@ -19,15 +19,41 @@ public class UpgradeButton : MonoBehaviour
 		NameText.text = UpgradeDefinition.Name;
 	}
 
-	public void Setup(
+
+	public void SetupUpgrade(
+		Game game,
 		Func<int> getLevel,
-		Func<int, bool> canPurchase,
-		Action<int> purchase)
+		Action onPurchase,
+		Func<int, bool> extraCanPurchase = null)
 	{
 		this.getLevel = getLevel;
-		this.canPurchase = canPurchase;
-		this.purchaseAction = purchase;
-		
+
+		this.canPurchase = (level) =>
+		{
+			if (level >= UpgradeDefinition.Max)
+				return false;
+
+			if (extraCanPurchase != null && !extraCanPurchase(level))
+				return false;
+
+			int cost = UpgradeDefinition.Costs[level];
+
+			return game.CanAfford(
+				UpgradeDefinition.ResourceType,
+				cost);
+		};
+
+		this.purchaseAction = (level) =>
+		{
+			int cost = UpgradeDefinition.Costs[level];
+
+			game.Spend(
+				UpgradeDefinition.ResourceType,
+				cost);
+
+			onPurchase();
+		};
+
 		UpdateUI();
 	}
 
@@ -62,6 +88,7 @@ public class UpgradeButton : MonoBehaviour
 			UpdateUI();
 		}
 	}
+
 	public bool IsMaxed()
 	{
 		return getLevel() >= UpgradeDefinition.Max;

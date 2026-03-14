@@ -13,57 +13,57 @@ public class PuyoUpgrades : MonoBehaviour
 
     void Start()
     {
-        UpgradeButton_Row.Setup(
-            getLevel: () => AddedRows,
-            canPurchase: (level) =>
-            {
-                if (level >= UpgradeButton_Row.UpgradeDefinition.Max)
-                    return false;
+        //UpgradeButton_Row.Setup(
+        //    getLevel: () => AddedRows,
+        //    canPurchase: (level) =>
+        //    {
+        //        if (level >= UpgradeButton_Row.UpgradeDefinition.Max)
+        //            return false;
 
-                int cost = UpgradeButton_Row.UpgradeDefinition.Costs[level];
+        //        int cost = UpgradeButton_Row.UpgradeDefinition.Costs[level];
 
-                return Game.CanAfford(
-                    UpgradeButton_Row.UpgradeDefinition.ResourceType,
-                    cost);
-            },
-            purchase: (level) =>
-            {
-                int cost = UpgradeButton_Row.UpgradeDefinition.Costs[level];
+        //        return Game.CanAfford(
+        //            UpgradeButton_Row.UpgradeDefinition.ResourceType,
+        //            cost);
+        //    },
+        //    purchase: (level) =>
+        //    {
+        //        int cost = UpgradeButton_Row.UpgradeDefinition.Costs[level];
 
-                Game.Spend(
-                    UpgradeButton_Row.UpgradeDefinition.ResourceType,
-                    cost);
+        //        Game.Spend(
+        //            UpgradeButton_Row.UpgradeDefinition.ResourceType,
+        //            cost);
 
-                AddedRows++;
-                PuyoGame.AddRow();
-            }
-        );
+        //        AddedRows++;
+        //        PuyoGame.AddRow();
+        //    }
+        //);
 
 
-        UpgradeButton_Col.Setup(
-            getLevel: () => AddedCols,
-            canPurchase: (level) =>
-            {
-                if (level >= UpgradeButton_Col.UpgradeDefinition.Max)
-                    return false;
+        //UpgradeButton_Col.Setup(
+        //    getLevel: () => AddedCols,
+        //    canPurchase: (level) =>
+        //    {
+        //        if (level >= UpgradeButton_Col.UpgradeDefinition.Max)
+        //            return false;
 
-                int cost = UpgradeButton_Col.UpgradeDefinition.Costs[level];
+        //        int cost = UpgradeButton_Col.UpgradeDefinition.Costs[level];
 
-                return Game.CanAfford(
-                    UpgradeButton_Col.UpgradeDefinition.ResourceType,
-                    cost);
-            },
-            purchase: (level) =>
-            {
-                int cost = UpgradeButton_Col.UpgradeDefinition.Costs[level];
+        //        return Game.CanAfford(
+        //            UpgradeButton_Col.UpgradeDefinition.ResourceType,
+        //            cost);
+        //    },
+        //    purchase: (level) =>
+        //    {
+        //        int cost = UpgradeButton_Col.UpgradeDefinition.Costs[level];
 
-                Game.Spend(
-                    UpgradeButton_Col.UpgradeDefinition.ResourceType,
-                    cost);
+        //        Game.Spend(
+        //            UpgradeButton_Col.UpgradeDefinition.ResourceType,
+        //            cost);
 
-                AddedCols++;
-                PuyoGame.AddCol();
-            }
-        );
+        //        AddedCols++;
+        //        PuyoGame.AddCol();
+        //    }
+        //);
     }
 }

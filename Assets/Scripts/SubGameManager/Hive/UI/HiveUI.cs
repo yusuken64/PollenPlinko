@@ -2,110 +2,76 @@ using UnityEngine;
 
 public class HiveUI : MonoBehaviour
 {
-	public Game Game;
-	public Hive Hive;
+    public Game Game;
+    public Hive Hive;
 
-	public UpgradeButton UpgradeButton_AddHex;
-	public UpgradeButton UpgradeButton_AddNurse;
-	public UpgradeButton UpgradeButton_AddHouse;
+    public UpgradeButton UpgradeButton_AddHex;
+    public UpgradeButton UpgradeButton_AddNurse;
 
-	public int AddedHexes;
+    public UpgradeButton UpgradeButton_AddHouse;
+    public UpgradeButton UpgradeButton_AddStorage;
+    public UpgradeButton UpgradeButton_AddFlower;
+
+    public int AddedHexes;
     public int AddedNurses;
+
     public int AddedHouses;
+    public int AddedStorage;
+    public int AddedFlowers;
 
     public void Start()
-	{
-        UpgradeButton_AddHex.Setup(
-            getLevel: () => AddedHexes,
-            canPurchase: (level) =>
+    {
+        UpgradeButton_AddHex.SetupUpgrade(
+            Game,
+            () => AddedHexes,
+            () =>
             {
-                if (level >= UpgradeButton_AddHex.UpgradeDefinition.Max)
-                    return false;
-
-                int cost = UpgradeButton_AddHex.UpgradeDefinition.Costs[level];
-
-                return Game.CanAfford(
-                    UpgradeButton_AddHex.UpgradeDefinition.ResourceType,
-                    cost);
-            },
-            purchase: (level) =>
-            {
-                int cost = UpgradeButton_AddHex.UpgradeDefinition.Costs[level];
-
-                Game.Spend(
-                    UpgradeButton_AddHex.UpgradeDefinition.ResourceType,
-                    cost);
-
                 AddedHexes++;
                 Hive.HexGrid.AddHex();
             }
         );
 
-        UpgradeButton_AddNurse.Setup(
-            getLevel: () => AddedNurses,
-            canPurchase: (level) =>
+        UpgradeButton_AddNurse.SetupUpgrade(
+            Game,
+            () => AddedNurses,
+            () =>
             {
-                if (level >= UpgradeButton_AddNurse.UpgradeDefinition.Max)
-                    return false;
-
-                int cost = UpgradeButton_AddNurse.UpgradeDefinition.Costs[level];
-
-                return Game.CanAfford(
-                    UpgradeButton_AddNurse.UpgradeDefinition.ResourceType,
-                    cost);
-            },
-            purchase: (level) =>
-            {
-                int cost = UpgradeButton_AddNurse.UpgradeDefinition.Costs[level];
-
-                Game.Spend(
-                    UpgradeButton_AddNurse.UpgradeDefinition.ResourceType,
-                    cost);
-
                 AddedNurses++;
                 Hive.SpawnNurse();
             }
         );
 
-        UpgradeButton_AddHouse.Setup(
-            getLevel: () => AddedHouses,
-            canPurchase: (level) =>
+        UpgradeButton_AddHouse.SetupUpgrade(
+            Game,
+            () => AddedHouses,
+            () =>
             {
-                if (Hive.HexGrid.GetEmptyHex() == null)
-				{
-                    return false;
-				}
-
-                if (level >= UpgradeButton_AddHouse.UpgradeDefinition.Max)
-                    return false;
-
-                int cost = UpgradeButton_AddHouse.UpgradeDefinition.Costs[level];
-
-                return Game.CanAfford(
-                    UpgradeButton_AddHouse.UpgradeDefinition.ResourceType,
-                    cost);
-            },
-            purchase: (level) =>
-            {
-                int cost = UpgradeButton_AddHouse.UpgradeDefinition.Costs[level];
-
-                Game.Spend(
-                    UpgradeButton_AddHouse.UpgradeDefinition.ResourceType,
-                    cost);
-
                 AddedHouses++;
-                Hive.SpawnHouse();
-            }
+                Hive.SpawnItem(Hive.HousePrefab);
+            },
+            extraCanPurchase: (level) => Hive.HexGrid.GetEmptyHex() != null
+        );
+
+        UpgradeButton_AddStorage.SetupUpgrade(
+            Game,
+            () => AddedStorage,
+            () =>
+            {
+                AddedStorage++;
+                Hive.SpawnItem(Hive.StoragePrefab);
+            },
+            extraCanPurchase: (level) => Hive.HexGrid.GetEmptyHex() != null
+        );
+
+        UpgradeButton_AddFlower.SetupUpgrade(
+            Game,
+            () => AddedFlowers,
+            () =>
+            {
+                AddedFlowers++;
+                Hive.SpawnItem(Hive.FlowerPrefab);
+            },
+            extraCanPurchase: (level) => Hive.HexGrid.GetEmptyHex() != null
         );
     }
-
-	public void AddHex_Clicked()
-	{
-		Hive.HexGrid.AddHex();
-	}
-
-	public void AddNurse_Clicked()
-	{
-		Hive.SpawnNurse();
-	}
 }

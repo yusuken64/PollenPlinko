@@ -12,7 +12,9 @@ public class Hive : MonoBehaviour, ISubGame
     [SerializeField] private float maxSize = 20f;
 
     public Nurse NursePrefab;
-    public House HousePrefab;
+    public HiveItem HousePrefab;
+    public HiveItem StoragePrefab;
+    public HiveItem FlowerPrefab;
 
     public Camera GameCamera => HiveCamera;
 
@@ -115,14 +117,14 @@ public class Hive : MonoBehaviour, ISubGame
         newNurse.Hive = this;
     }
 
-    public void SpawnHouse()
-    {
-        var newHouse = Instantiate(HousePrefab, this.transform);
-        var hex = HexGrid.GetEmptyHex();
+	public void SpawnItem(HiveItem itemPrefab)
+	{
+		var newHouse = Instantiate(itemPrefab, this.transform);
+		var hex = HexGrid.GetEmptyHex();
 
-        if (hex != null)
-        {
-            newHouse.Setup(hex, Game, 1);
-        }
-    }
+		if (hex != null)
+		{
+			newHouse.Setup(hex, Game, 1);
+		}
+	}
 }

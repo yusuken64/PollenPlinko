@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class Queen : MonoBehaviour
 {
+    public Game Game;
     public Hive Hive;
     public HiveItem EggPrefab;
 
@@ -86,7 +87,10 @@ public class Queen : MonoBehaviour
             return;
         }
 
+        var maxLevel = Hive.MergeManager.MaxLevelOf("house");
+
         var newEgg = Instantiate(EggPrefab, null);
+        newEgg.Setup(_targetHex, Game, maxLevel);
 
         _targetHex.SetItem(newEgg, Hive);
     }

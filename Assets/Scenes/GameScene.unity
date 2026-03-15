@@ -2741,6 +2741,7 @@ MonoBehaviour:
   Prefabs:
   - {fileID: 4843644982296706761, guid: 4a79a30df2d7c134f8c0d3a5c0b012a2, type: 3}
   - {fileID: 8644878278566693929, guid: c370227e2205c384687d0424d0dcb44b, type: 3}
+  - {fileID: 1762740885441456105, guid: 0db81bf48366a964895bfa58d0ffb3f0, type: 3}
   - {fileID: 7225939021586987892, guid: a489e3b383cb73848a43476c393ac849, type: 3}
   - {fileID: 2910253105665183362, guid: ac1e7dd29e522394a9cebede0d2137be, type: 3}
   - {fileID: 1725759577153395682, guid: f4469207c34df36438ca90dfe11cdfca, type: 3}
@@ -3073,7 +3074,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &154395779
 Transform:
   m_ObjectHideFlags: 0
@@ -17908,7 +17909,7 @@ MonoBehaviour:
   Bees:
     _value: 0
   Pollen:
-    _value: 0
+    _value: 1000
   Nectar:
     _value: 0
   Honey:

@@ -15,6 +15,8 @@ public class Hive : MonoBehaviour, ISubGame
     public HiveItem HousePrefab;
     public HiveItem StoragePrefab;
     public HiveItem FlowerPrefab;
+    public HiveItem FlowerNectarPrefab;
+    public HiveItem BedPrefab;
 
     public Camera GameCamera => HiveCamera;
 

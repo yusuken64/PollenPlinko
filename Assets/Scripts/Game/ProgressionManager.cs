@@ -25,6 +25,9 @@ public class ProgressionManager : MonoBehaviour
 
 		GardenSubGameButton.VisibleCondition = () => Game.Larvae.Value > 10;
 		GardenSubGameButton.UnlockCondition = () => false;
+
+		PuyoSubGameButton.VisibleCondition = () => Game.Nectar.Value > 10;
+		PuyoSubGameButton.UnlockCondition = () => false;
 	}
 
 	private void Update()

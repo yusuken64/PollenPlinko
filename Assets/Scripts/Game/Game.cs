@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class Game : MonoBehaviour
 {
+	public Hive Hive;
 	public SpawnZone SpawnZone;
 	public FlowerSpawnZone FlowerSpawnZone;
 

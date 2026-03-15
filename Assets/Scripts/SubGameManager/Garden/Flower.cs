@@ -26,6 +26,7 @@ public class Flower : MonoBehaviour
 		{
 			parentPin.OccupiedFlower = null;
 			Destroy(gameObject);
+			_game.FlowerSpawnZone.FlowerDestroyed(this);
 		}
 	}
 

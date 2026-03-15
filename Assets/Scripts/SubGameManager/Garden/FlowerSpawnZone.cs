@@ -24,6 +24,7 @@ public class FlowerSpawnZone : MonoBehaviour
     private readonly List<GameObject> _activeFlowers = new();
 
     public TextMeshProUGUI FlowerText;
+
     public Image FlowerFill;
 
     public Pin PinPrefab;
@@ -36,7 +37,7 @@ public class FlowerSpawnZone : MonoBehaviour
     public float PollenWeight = 1;
     public float NectarWeight;
 
-	[ContextMenu("Setup Pins")]
+    [ContextMenu("Setup Pins")]
     public void SetupPins()
     {
         Pins.Clear();
@@ -84,53 +85,65 @@ public class FlowerSpawnZone : MonoBehaviour
         _rectTransform = GetComponent<RectTransform>();
     }
 
+    private void Start()
+    {
+        if (_activeFlowers.Count() <= 0)
+        {
+            SpawnFlowers();
+        }
+    }
+
     private void Update()
     {
-        // Clean up destroyed references
-        _activeFlowers.RemoveAll(f => f == null);
-
-        // If we're already at max, do nothing
-        if (_activeFlowers.Count >= maxFlowers)
-            return;
-
-        _timer += Time.deltaTime;
-
-        if (_timer >= spawnInterval)
-        {
-            _timer = 0f;
-			var newItem = Spawn();
-			if (newItem != null)
-			{
-				_activeFlowers.Add(newItem);
-			}
-		}
-
-		FlowerText.text = $"Flowers { _activeFlowers.Count()} / {maxFlowers}";
+        FlowerText.text = $"Flowers { _activeFlowers.Count()} / {maxFlowers}";
         FlowerFill.fillAmount = _timer / spawnInterval;
     }
 
-    private GameObject Spawn()
+    public void SpawnFlowers()
+    {
+        _activeFlowers.Clear();
+
+        var hiveUI = FindFirstObjectByType<HiveUI>(FindObjectsInactive.Include);
+        var flowers = hiveUI.AddedFlowers + 1;
+        var flowers_nectar = hiveUI.AddedFlowersNectar;
+
+        for (int i = 0; i < flowers; i++)
+        {
+            var newItem = Spawn(FlowerPrefab_Pollen);
+            if (newItem != null)
+            {
+                _activeFlowers.Add(newItem);
+            }
+        }
+
+        for (int i = 0; i < flowers_nectar; i++)
+        {
+            var newItem = Spawn(FlowerPrefab_Nectar);
+            if (newItem != null)
+            {
+                _activeFlowers.Add(newItem);
+            }
+        }
+    }
+
+    internal void FlowerDestroyed(Flower flower)
+    {
+        _activeFlowers.Remove(flower.gameObject);
+        if (_activeFlowers.Count() <= 0)
+        {
+            SpawnFlowers();
+        }
+    }
+
+    private GameObject Spawn(GameObject flowerPrefab)
     {
         if (FlowerPrefab_Pollen == null || _rectTransform == null)
             return null;
 
-        if(!Pins.Any(x => x.OccupiedFlower == null))
-		{
-            return null;
-		}
-
-        float total = PollenWeight + NectarWeight;
-        float roll = Random.value * total;
-
-        GameObject flowerPrefab;
-        if (roll < PollenWeight)
+        if (!Pins.Any(x => x.OccupiedFlower == null))
         {
-            flowerPrefab = FlowerPrefab_Pollen;
+            return null;
         }
-		else
-		{
-            flowerPrefab = FlowerPrefab_Nectar;
-		}
 
         var emptyPins = Pins.Where(x => x.OccupiedFlower == null).ToList();
         var randomPin = emptyPins[Random.Range(0, emptyPins.Count())];

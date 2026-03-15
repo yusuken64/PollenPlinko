@@ -11,6 +11,8 @@ public class HiveUI : MonoBehaviour
     public UpgradeButton UpgradeButton_AddHouse;
     public UpgradeButton UpgradeButton_AddStorage;
     public UpgradeButton UpgradeButton_AddFlower;
+    public UpgradeButton UpgradeButton_AddFlower_Nectar;
+    public UpgradeButton UpgradeButton_AddBed;
 
     public int AddedHexes;
     public int AddedNurses;
@@ -18,6 +20,8 @@ public class HiveUI : MonoBehaviour
     public int AddedHouses;
     public int AddedStorage;
     public int AddedFlowers;
+    public int AddedFlowersNectar;
+    public int AddedBeds;
 
     public void Start()
     {
@@ -70,6 +74,28 @@ public class HiveUI : MonoBehaviour
             {
                 AddedFlowers++;
                 Hive.SpawnItem(Hive.FlowerPrefab);
+            },
+            extraCanPurchase: (level) => Hive.HexGrid.GetEmptyHex() != null
+        );
+
+        UpgradeButton_AddFlower_Nectar.SetupUpgrade(
+            Game,
+            () => AddedFlowersNectar,
+            () =>
+            {
+                AddedFlowersNectar++;
+                Hive.SpawnItem(Hive.FlowerNectarPrefab);
+            },
+            extraCanPurchase: (level) => Hive.HexGrid.GetEmptyHex() != null
+        );
+
+        UpgradeButton_AddBed.SetupUpgrade(
+            Game,
+            () => AddedBeds,
+            () =>
+            {
+                AddedBeds++;
+                Hive.SpawnItem(Hive.BedPrefab);
             },
             extraCanPurchase: (level) => Hive.HexGrid.GetEmptyHex() != null
         );

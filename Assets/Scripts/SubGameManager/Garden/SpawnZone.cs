@@ -78,10 +78,10 @@ public class SpawnZone : MonoBehaviour
 
     private void TrySpawn(Vector3 position)
     {
-        if (Game.Bees.Value <= CurrentMult)
+        if (Game.Bees.Value <= 1)
             return;
 
-        Game.Bees.Add(-CurrentMult);
+        Game.Bees.Add(-1);
 
         SpawnBee(position);
     }
@@ -91,7 +91,9 @@ public class SpawnZone : MonoBehaviour
         var bee = Instantiate(ballPrefab, pos, Quaternion.identity, transform)
             .GetComponent<Bee>();
 
-        bee.Setup(Game, CurrentMult);
+        var maxLevel = Game.Hive.MergeManager.MaxLevelOf("bed");
+
+        bee.Setup(Game, maxLevel + 1);
 
         return bee;
     }

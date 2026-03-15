@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7438497379770788757}
   - component: {fileID: 5066686443775084092}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Nurse
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -59,7 +59,7 @@ GameObject:
   m_Component:
   - component: {fileID: 545886473968447701}
   - component: {fileID: 7002328124402431436}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Square
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -125,8 +125,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -725884627
+  m_SortingLayer: 1
   m_SortingOrder: 3
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 0.9547169, g: 0.34405836, b: 0.34405836, a: 1}
@@ -149,7 +149,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1280315773704100083}
   - component: {fileID: 302684338385395182}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Circle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -215,8 +215,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -725884627
+  m_SortingLayer: 1
   m_SortingOrder: 2
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
   m_Color: {r: 1, g: 0.94955313, b: 0.76037735, a: 1}
@@ -239,7 +239,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4560794069313952296}
   - component: {fileID: 6427596824751958627}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Square (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -305,8 +305,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -725884627
+  m_SortingLayer: 1
   m_SortingOrder: 3
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 0.9547169, g: 0.34405836, b: 0.34405836, a: 1}

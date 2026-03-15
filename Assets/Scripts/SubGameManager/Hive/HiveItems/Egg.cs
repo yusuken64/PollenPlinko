@@ -1,6 +1,4 @@
-using System;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class Egg : HiveItem
 {
@@ -12,7 +10,7 @@ public class Egg : HiveItem
 	public void Hatch()
     {
         CurrentHex.OccupiedObject = null;
-        Game.Larvae.Add(1);
+        Game.Larvae.Add((int)Mathf.Pow(3, Level));
         Destroy(gameObject);
     }
 }

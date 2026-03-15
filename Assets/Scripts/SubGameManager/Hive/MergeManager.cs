@@ -1,4 +1,5 @@
 using DG.Tweening;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -45,12 +46,14 @@ public class MergeManager : MonoBehaviour
 
         int mergeRequirement = 3;
         int spawnCount = cluster.Count / mergeRequirement;
+        int spawnCountRemainder = cluster.Count % mergeRequirement;
 
         // spawn upgraded item
-        SpawnMergedItems(mergeHex, baseItem, spawnCount);
+        SpawnMergedItems(mergeHex, baseItem, spawnCount, baseItem.Level + 1);
+        SpawnMergedItems(mergeHex, baseItem, spawnCountRemainder, baseItem.Level);
     }
 
-    void SpawnMergedItems(Hex centerHex, HiveItem baseItem, int count)
+    void SpawnMergedItems(Hex centerHex, HiveItem baseItem, int count, int level)
     {
         for (int i = 0; i < count; i++)
         {
@@ -63,7 +66,7 @@ public class MergeManager : MonoBehaviour
             if (target != null)
             {
                 item.transform.DOMove(target.transform.position, 0.25f);
-                item.Level = baseItem.Level + 1;
+				item.Level = level;
                 target.SetItem(item, Hive);
             }
         }
@@ -72,5 +75,28 @@ public class MergeManager : MonoBehaviour
     public HiveItem GetNextPrefab(HiveItem item)
     {
         return Prefabs.FirstOrDefault(x => x.ItemType == item.ItemType);
+    }
+
+
+    internal int MaxLevelOf(string itemType)
+    {
+        int maxLevel = 0;
+
+        foreach (var hex in Hive.HexGrid.Hexes.Values)
+        {
+            if (hex.OccupiedObject == null)
+                continue;
+
+            HiveItem item = hex.OccupiedObject;
+            if (item == null)
+                continue;
+
+            if (item.ItemType == itemType)
+            {
+                maxLevel = Mathf.Max(maxLevel, item.Level);
+            }
+        }
+
+        return maxLevel;
     }
 }

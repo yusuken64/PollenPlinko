@@ -8,7 +8,7 @@ public class UI : MonoBehaviour
     public ResourceDisplay ResourceDisplay_Pollen;
     public ResourceDisplay ResourceDisplay_Nectar;
     public ResourceDisplay ResourceDisplay_Honey;
-    public ResourceDisplay ResourceDisplay_Gold;
+    public ResourceDisplay ResourceDisplay_Science;
 
 	private void Start()
     {
@@ -16,6 +16,6 @@ public class UI : MonoBehaviour
         ResourceDisplay_Pollen.Register(Game.Pollen);
         ResourceDisplay_Nectar.Register(Game.Nectar);
         ResourceDisplay_Honey.Register(Game.Honey);
-        ResourceDisplay_Gold.Register(Game.Gold);
+        ResourceDisplay_Science.Register(Game.Wax);
     }
 }

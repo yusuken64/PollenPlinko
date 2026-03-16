@@ -68,7 +68,7 @@ public class ShopItem : MonoBehaviour
 		Progress -= ShopItemDefinition.ProductionTime;
 
 		int payout = ShopItemDefinition.BasePayout * Count;
-		Game.Gold.Add(payout);
+		Game.Wax.Add(payout);
 
 		AutoProgress = false;
 		if (AutoRestart)

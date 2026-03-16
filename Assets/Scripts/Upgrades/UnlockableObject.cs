@@ -14,11 +14,6 @@ public class UnlockableObject : MonoBehaviour
     //[Header("Settings")]
     //public bool HideWhenInvisible = true;
 
-    void Start()
-    {
-        Refresh();
-    }
-
     public void Refresh()
     {
         // Visible logic

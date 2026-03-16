@@ -14,7 +14,7 @@ public class PuyoGame : MonoBehaviour, ISubGame
     public Transform BallContainer;
 
     public int Width;
-    public int Height;
+	public int Height;
 
     public float CellSize;
     public Vector3 StartPosition;
@@ -29,14 +29,18 @@ public class PuyoGame : MonoBehaviour, ISubGame
     private float _popDelay = 0.5f;
     public Camera GameCamera => PuyoCamera;
 
-    public TextMeshProUGUI Text;
+	public int ExtraRows { get; private set; }
+
+	public TextMeshProUGUI Text;
     public int Combo;
-    public int Games;
     public int Bet;
     public int Win;
 
     public int RowsToAdd;
     public int ColsToAdd;
+
+    public bool AutoSpin;
+    public ToggleBoolButton AutoSpin_ToggleBoolButton;
 
     private void Start()
 	{
@@ -108,7 +112,7 @@ public class PuyoGame : MonoBehaviour, ISubGame
     private void Update()
     {
         Text.text = @$"Combo {Combo}
-Games {Games}
+Auto {(AutoSpin ? "On" : "Off")}
 BET {Bet}
 Win {Win}";
 
@@ -143,29 +147,27 @@ Win {Win}";
 
         // Resolve new matches
         var matches = FindMatches();
-        if (matches.Count == 0)
-        {
-            if (Games > 0)
-            {
-                Games--;
-                Combo = 0;
-                ClearBoard();
-                FillBoard();
-                StartCascade();
-            }
-            else
-            {
-                _cascading = false;
-                Combo = 0;
-
-                //Game.Nectar.Add(Win);
-                HandleBoardUpgrades();
-            }
-        }
-        else
+        if (matches.Count != 0)
         {
             EnqueueMatches(matches);
             _waitTimer = _popDelay;
+            return;
+        }
+
+        Combo = 0;
+        HandleBoardUpgrades();
+        if (AutoSpin && CanStart())
+        {
+            StartSpin();
+        }
+        else
+        {
+            AutoSpin_ToggleBoolButton.SetToOff();
+            AutoSpin = false;
+            _cascading = false;
+            Combo = 0;
+
+            HandleBoardUpgrades();
         }
     }
 
@@ -239,7 +241,7 @@ Win {Win}";
                 Game.Pollen.Add(1 * Bet);
                 break;
 			case PuyoColor.Green:
-                Game.Gold.Add(1 * Bet);
+                Game.Wax.Add(1 * Bet);
                 break;
 			case PuyoColor.Purple:
                 Game.Jelly.Add(1 * Bet);
@@ -517,18 +519,33 @@ Win {Win}";
     public void Spin_Clicked()
     {
         Combo = 0;
-        Games = 5;
 		Win = 0;
 
-		int cost = Bet * Games;
-        Game.Nectar.Add(-cost);
+        if (CanStart())
+		{
+			StartSpin();
+		}
+	}
 
-        ClearBoard();
-        FillBoard();
-        StartCascade();
+	private void StartSpin()
+	{
+		int cost = Bet;
+		Game.Nectar.Add(-cost);
+		ClearBoard();
+		FillBoard();
+		StartCascade();
+	}
+
+	private bool CanStart()
+    {
+        int cost = Bet;
+
+        if (cost <= 0) { return false; }
+
+        return Game.Nectar.Value >= cost;
     }
 
-    public void BetPlus_Clicked()
+	public void BetPlus_Clicked()
 	{
         Bet++;
 	}
@@ -565,6 +582,24 @@ Win {Win}";
 	public void HandleMouseUp(Vector3 worldPoint)
 	{
 	}
+
+    public void AutoToggled(bool isOn)
+	{
+        AutoSpin = isOn;
+        if (AutoSpin)
+        {
+            if (CanStart())
+            {
+                StartSpin();
+            }
+        }
+    }
+
+    internal void SetLevel(int maxLevel)
+    {
+        RowsToAdd += Mathf.Max(0, maxLevel - ExtraRows);
+        ExtraRows = maxLevel;
+    }
 }
 
 public enum PuyoColor

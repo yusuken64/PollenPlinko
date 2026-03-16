@@ -31,6 +31,13 @@ public abstract class HiveItem : MonoBehaviour
 		CurrentHex.OccupiedObject = this;
 		transform.parent = CurrentHex.transform;
 		transform.localPosition = Vector3.zero;
+
+		AfterSetup();
+	}
+
+	public virtual void AfterSetup()
+	{
+
 	}
 
 	public virtual void HandleClick() { }

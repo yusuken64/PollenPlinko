@@ -17,6 +17,7 @@ public class Hive : MonoBehaviour, ISubGame
     public HiveItem FlowerPrefab;
     public HiveItem FlowerNectarPrefab;
     public HiveItem BedPrefab;
+    public HiveItem SciencePrefab;
 
     public Camera GameCamera => HiveCamera;
 
@@ -121,12 +122,12 @@ public class Hive : MonoBehaviour, ISubGame
 
 	public void SpawnItem(HiveItem itemPrefab)
 	{
-		var newHouse = Instantiate(itemPrefab, this.transform);
+		var newItem = Instantiate(itemPrefab, this.transform);
 		var hex = HexGrid.GetEmptyHex();
 
 		if (hex != null)
 		{
-			newHouse.Setup(hex, Game, 1);
+			newItem.Setup(hex, Game, 1);
 		}
 	}
 }

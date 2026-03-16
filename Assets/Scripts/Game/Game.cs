@@ -14,7 +14,7 @@ public class Game : MonoBehaviour
 	public Resource Nectar = new();
 	public Resource Honey = new();
 	public Resource Jelly = new();
-	public Resource Gold = new();
+	public Resource Wax = new();
 
 	[Header("Upgrades Bees")]
 	//bee upgrades
@@ -41,8 +41,8 @@ public class Game : MonoBehaviour
 				break;
 			case ResourceType.RoyalJelly:
 				break;
-			case ResourceType.Gold:
-				return Gold.Value >= amount;
+			case ResourceType.Science:
+				return Wax.Value >= amount;
 				break;
 		}
 
@@ -70,8 +70,8 @@ public class Game : MonoBehaviour
 				break;
 			case ResourceType.RoyalJelly:
 				break;
-			case ResourceType.Gold:
-				Gold.Add(-amount);
+			case ResourceType.Science:
+				Wax.Add(-amount);
 				break;
 		}
 	}
@@ -97,8 +97,8 @@ public class Game : MonoBehaviour
 				break;
 			case ResourceType.RoyalJelly:
 				break;
-			case ResourceType.Gold:
-				Gold.Add(amount);
+			case ResourceType.Science:
+				Wax.Add(amount);
 				break;
 		}
 	}

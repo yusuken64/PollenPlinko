@@ -57,5 +57,5 @@ public enum ResourceType
 	Nectar,
 	Honey,
 	RoyalJelly,
-	Gold,
+	Science,
 }

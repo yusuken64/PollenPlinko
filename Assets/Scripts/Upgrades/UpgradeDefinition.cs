@@ -7,6 +7,7 @@ public class UpgradeDefinition : ScriptableObject
 {
 	public string ID;
 	public string Name;
+	public string Description;
 
 	public int Max;
 	public ResourceType ResourceType;

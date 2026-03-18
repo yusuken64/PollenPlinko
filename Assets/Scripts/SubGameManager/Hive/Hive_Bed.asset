@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UpgradeDefinition
   ID: Hive_Bed
   Name: Bed
+  Description: Increase Pollen Collection
   Max: 99
   ResourceType: 2
   ScalingMode: 1

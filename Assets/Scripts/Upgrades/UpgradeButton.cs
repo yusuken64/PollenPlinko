@@ -17,6 +17,11 @@ public class UpgradeButton : MonoBehaviour
 	private void Start()
 	{
 		NameText.text = UpgradeDefinition.Name;
+		var info = GetComponent<ToolTipInfo>();
+		if (info != null)
+		{
+			info.ToolTipString = $"{UpgradeDefinition.Description}";
+		}
 	}
 
 

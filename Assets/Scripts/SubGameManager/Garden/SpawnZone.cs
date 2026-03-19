@@ -7,7 +7,8 @@ public class SpawnZone : MonoBehaviour
     public Game Game;
 
     [Header("Prefab")]
-    public GameObject ballPrefab;
+    public Bee ballPrefab;
+    public Transform Container;
 
     [Header("Timing")]
     public float spawnInterval = 1f;
@@ -24,11 +25,21 @@ public class SpawnZone : MonoBehaviour
     public Toggle MultToggle10;
 
     public int CurrentMult;
+    private SimplePool<Bee> _pool;
 
-	private void Awake()
+    private void Awake()
     {
         _rectTransform = GetComponent<RectTransform>();
         SpawnRateSlider.onValueChanged.AddListener(SliderChanged);
+
+        _pool = new SimplePool<Bee>(
+            createFunc: () =>
+            {
+                var obj = Instantiate(ballPrefab, Container);
+                obj.gameObject.SetActive(false);
+                return obj;
+            }
+        );
     }
 
 	private void Start()
@@ -88,12 +99,17 @@ public class SpawnZone : MonoBehaviour
 
     private Bee SpawnBee(Vector3 pos)
     {
-        var bee = Instantiate(ballPrefab, pos, Quaternion.identity, transform)
-            .GetComponent<Bee>();
+        var bee = _pool.Get();
+        bee.transform.position = pos;
 
         var maxLevel = Game.Hive.MergeManager.MaxLevelOf("bed");
 
         bee.Setup(Game, maxLevel + 1);
+        bee.SetRelease(() =>
+        {
+            bee.gameObject.SetActive(false);
+            _pool.Release(bee);
+        });
 
         return bee;
     }

@@ -16,8 +16,10 @@ public class Flower : MonoBehaviour
 			TakeDamage(1);
 
 			bee.TakeDamage(1);
-			_game.Gain(ResourceType, bee.Mult);
-        }
+			int amount = bee.Mult;
+			_game.Gain(ResourceType, amount);
+			FloatingTextManager.Instance.ShowText(this.transform.position, $"+{amount}");
+		}
 	}
 	internal void TakeDamage(int v)
 	{

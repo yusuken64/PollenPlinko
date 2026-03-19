@@ -8,21 +8,21 @@ public class Bee : MonoBehaviour
 
 	public GameObject BeeShadow;
 	private bool isDead;
+	private const int _aliveLayer = 8;
 	private const int _deadLayer = 9;
 
 	public int Mult;
 	public TextMeshPro Text;
+
+	public Action Release { get; private set; }
 
 	internal void Setup(Game game, int mult)
 	{
 		this.hp = game.BeeHitHP;
 		Mult = mult;
 		Text.text = mult.ToString();
-	}
-
-	private void Start()
-	{
-		BeeShadow.gameObject.SetActive(false);
+		this.gameObject.SetActive(true);
+		Spawn();
 	}
 
 	internal void TakeDamage(int v)
@@ -33,6 +33,17 @@ public class Bee : MonoBehaviour
 		{
 			Die();
 		}
+	}
+
+	public void Spawn()
+	{
+		isDead = false;
+		BeeShadow.gameObject.SetActive(false);
+
+		gameObject.layer = _aliveLayer;
+
+		SetLayerRecursively(gameObject, _aliveLayer);
+
 	}
 
 	private void Die()
@@ -55,5 +66,10 @@ public class Bee : MonoBehaviour
 		{
 			SetLayerRecursively(child.gameObject, layer);
 		}
+	}
+
+	internal void SetRelease(Action release)
+	{
+		Release = release;
 	}
 }

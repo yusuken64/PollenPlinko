@@ -699,8 +699,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3201237102871629335}
-  - component: {fileID: 8806044488083243002}
   - component: {fileID: 7399347795156498087}
+  - component: {fileID: 8806044488083243002}
   - component: {fileID: 8139228518792963913}
   - component: {fileID: 3517859558926141550}
   m_Layer: 8
@@ -732,6 +732,22 @@ Transform:
   - {fileID: 8716681580823332339}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7399347795156498087
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7126892640086082895}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af2df1966fb648c4c933f7cc4758471d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Bee
+  hp: 3
+  BeeShadow: {fileID: 5135449370204495352}
+  Mult: 0
+  Text: {fileID: 1894486119989398129}
 --- !u!212 &8806044488083243002
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -790,22 +806,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &7399347795156498087
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7126892640086082895}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: af2df1966fb648c4c933f7cc4758471d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Bee
-  hp: 3
-  BeeShadow: {fileID: 5135449370204495352}
-  Mult: 0
-  Text: {fileID: 1894486119989398129}
 --- !u!58 &8139228518792963913
 CircleCollider2D:
   m_ObjectHideFlags: 0

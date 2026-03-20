@@ -10,6 +10,8 @@ public class UpgradeButton : MonoBehaviour
 	public TextMeshProUGUI LevelText;
 	public TextMeshProUGUI CostsText;
 
+	public AudioClip UpgradeClip;
+
 	private Func<int> getLevel;
 	private Func<int, bool> canPurchase;
 	private Action<int> purchaseAction;
@@ -57,6 +59,8 @@ public class UpgradeButton : MonoBehaviour
 				cost);
 
 			onPurchase();
+
+			AudioManager.Instance.PlaySFX(UpgradeClip, AudioManager.AUDIOPOOLID_DEFAULT);
 		};
 
 		UpdateUI();

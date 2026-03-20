@@ -9,6 +9,8 @@ public class FloatingTextManager : MonoBehaviour
 
 	private SimplePool<FloatingText> _pool;
 
+	public bool SupressText;
+
 	private void Awake()
 	{
 		if (Instance == null)
@@ -28,6 +30,8 @@ public class FloatingTextManager : MonoBehaviour
 
 	public void ShowText(Vector3 worldPosition, string message)
 	{
+		if (SupressText) { return; }
+
 		var text = _pool.Get();
 
 		text.gameObject.SetActive(true);

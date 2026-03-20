@@ -10,6 +10,8 @@ public class MergeManager : MonoBehaviour
     public List<HiveItem> Prefabs;
 
     public Hive Hive;
+    public AudioClip MergeClip;
+
     public IEnumerator MergeRoutine(List<Hex> cluster, Hex mergeHex, HiveItem baseItem)
     {
         List<Tween> tweens = new List<Tween>();
@@ -49,6 +51,7 @@ public class MergeManager : MonoBehaviour
         int spawnCountRemainder = cluster.Count % mergeRequirement;
 
         // spawn upgraded item
+        AudioManager.Instance.PlaySFX(MergeClip, AudioManager.AUDIOPOOLID_DEFAULT);
         SpawnMergedItems(mergeHex, baseItem, spawnCount, baseItem.Level + 1);
         SpawnMergedItems(mergeHex, baseItem, spawnCountRemainder, baseItem.Level);
     }

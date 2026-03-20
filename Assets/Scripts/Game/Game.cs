@@ -4,6 +4,7 @@ using UnityEngine;
 public class Game : MonoBehaviour
 {
 	public Hive Hive;
+	public Garden Garden;
 	public SpawnZone SpawnZone;
 	public FlowerSpawnZone FlowerSpawnZone;
 

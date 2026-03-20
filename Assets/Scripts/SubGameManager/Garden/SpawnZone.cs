@@ -87,7 +87,7 @@ public class SpawnZone : MonoBehaviour
         TrySpawn(spawnPos);
     }
 
-    private void TrySpawn(Vector3 position)
+    public void TrySpawn(Vector3 position)
     {
         if (Game.Bees.Value <= 1)
             return;
@@ -128,7 +128,7 @@ public class SpawnZone : MonoBehaviour
         return spawn;
     }
 
-    private Vector3 GetRandomSpawnPosition()
+    public Vector3 GetRandomSpawnPosition()
     {
         Rect rect = _rectTransform.rect;
 

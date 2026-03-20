@@ -7,8 +7,8 @@ using UnityEngine.UI;
 public class FlowerSpawnZone : MonoBehaviour
 {
     [Header("Prefab")]
-    public GameObject FlowerPrefab_Pollen;
-    public GameObject FlowerPrefab_Nectar;
+    public Flower FlowerPrefab_Pollen;
+    public Flower FlowerPrefab_Nectar;
 
     [Header("Timing")]
     public float spawnInterval = 1f;
@@ -21,7 +21,7 @@ public class FlowerSpawnZone : MonoBehaviour
     private RectTransform _rectTransform;
     private float _timer;
 
-    private readonly List<GameObject> _activeFlowers = new();
+    private readonly List<Flower> _activeFlowers = new();
 
     public TextMeshProUGUI FlowerText;
 
@@ -36,6 +36,9 @@ public class FlowerSpawnZone : MonoBehaviour
 
     public float PollenWeight = 1;
     public float NectarWeight;
+    private SimplePool<Flower> _poolPollen;
+    private SimplePool<Flower> _poolNectar;
+
 
     [ContextMenu("Setup Pins")]
     public void SetupPins()
@@ -83,6 +86,24 @@ public class FlowerSpawnZone : MonoBehaviour
     private void Awake()
     {
         _rectTransform = GetComponent<RectTransform>();
+
+        _poolPollen = new SimplePool<Flower>(
+          createFunc: () =>
+          {
+              var obj = Instantiate(FlowerPrefab_Pollen, this.transform);
+              obj.gameObject.SetActive(false);
+              return obj;
+          }
+         );
+
+        _poolNectar = new SimplePool<Flower>(
+          createFunc: () =>
+          {
+              var obj = Instantiate(FlowerPrefab_Nectar, this.transform);
+              obj.gameObject.SetActive(false);
+              return obj;
+          }
+         );
     }
 
     private void Start()
@@ -109,7 +130,7 @@ public class FlowerSpawnZone : MonoBehaviour
 
         for (int i = 0; i < flowers; i++)
         {
-            var newItem = Spawn(FlowerPrefab_Pollen);
+            var newItem = Spawn(_poolPollen);
             if (newItem != null)
             {
                 _activeFlowers.Add(newItem);
@@ -118,7 +139,7 @@ public class FlowerSpawnZone : MonoBehaviour
 
         for (int i = 0; i < flowers_nectar; i++)
         {
-            var newItem = Spawn(FlowerPrefab_Nectar);
+            var newItem = Spawn(_poolNectar);
             if (newItem != null)
             {
                 _activeFlowers.Add(newItem);
@@ -128,18 +149,28 @@ public class FlowerSpawnZone : MonoBehaviour
 
     internal void FlowerDestroyed(Flower flower)
     {
-        _activeFlowers.Remove(flower.gameObject);
+        if (!_activeFlowers.Contains(flower))
+		{
+            throw new System.Exception("no flower");
+		}
+        _activeFlowers.Remove(flower);
         if (_activeFlowers.Count() <= 0)
         {
             SpawnFlowers();
         }
     }
 
-    private GameObject Spawn(GameObject flowerPrefab)
+    [ContextMenu("Check Flowers")]
+    public void CheckFlowers()
     {
-        if (FlowerPrefab_Pollen == null || _rectTransform == null)
-            return null;
+        if (_activeFlowers.Count() <= 0)
+        {
+            SpawnFlowers();
+        }
+    }
 
+    private Flower Spawn(SimplePool<Flower> pool)
+    {
         if (!Pins.Any(x => x.OccupiedFlower == null))
         {
             return null;
@@ -150,10 +181,19 @@ public class FlowerSpawnZone : MonoBehaviour
 
         float randomAngle = Random.Range(0f, 360f);
         Quaternion rotation = Quaternion.Euler(0f, 0f, randomAngle);
-        var newItem = Instantiate(flowerPrefab, randomPin.transform.position, rotation, this.transform);
 
-        randomPin.OccupiedFlower = newItem;
-        newItem.GetComponent<Flower>().Setup(Game, randomPin);
+        Flower newItem = pool.Get();
+        newItem.transform.position = randomPin.transform.position;
+        newItem.transform.SetPositionAndRotation(randomPin.transform.position, rotation);
+
+        randomPin.OccupiedFlower = newItem.gameObject;
+        newItem.Setup(Game, randomPin);
+        newItem.gameObject.SetActive(true);
+        newItem.SetRelease(() =>
+        {
+            newItem.gameObject.SetActive(false);
+            pool.Release(newItem);
+        });
 
         return newItem;
     }

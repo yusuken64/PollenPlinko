@@ -6,6 +6,9 @@ public class Garden : MonoBehaviour, ISubGame
 	public Camera GardenCamera;
 	public Camera GameCamera => GardenCamera;
 
+	public AudioClip PinHit;
+	public AudioClip FlowerHit;
+
 	public void HandleMouseDown(Vector3 worldPoint)
 	{
 		SpawnZone.HandleClickSpawn(worldPoint);

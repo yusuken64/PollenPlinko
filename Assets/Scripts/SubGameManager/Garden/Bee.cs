@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Bee : MonoBehaviour
 {
+	public Game Game { get; private set; }
+
 	public int hp = 3;
 
 	public GameObject BeeShadow;
@@ -18,6 +20,7 @@ public class Bee : MonoBehaviour
 
 	internal void Setup(Game game, int mult)
 	{
+		Game = game;
 		this.hp = game.BeeHitHP;
 		Mult = mult;
 		Text.text = mult.ToString();
@@ -71,5 +74,10 @@ public class Bee : MonoBehaviour
 	internal void SetRelease(Action release)
 	{
 		Release = release;
+	}
+
+	private void OnCollisionEnter2D(Collision2D collision)
+	{
+		AudioManager.Instance.PlaySFX(Game.Garden.PinHit, AudioManager.AUDIOPOOLID_PINS);
 	}
 }

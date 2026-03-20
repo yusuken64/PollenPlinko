@@ -2823,6 +2823,7 @@ MonoBehaviour:
   - {fileID: 1725759577153395682, guid: f4469207c34df36438ca90dfe11cdfca, type: 3}
   - {fileID: 6775636233258762910, guid: c10cd95f9c4c769468fce3e26002f158, type: 3}
   Hive: {fileID: 133027694}
+  MergeClip: {fileID: 8300000, guid: 1e3916055c6134c71aa8aeed2cd078cc, type: 3}
 --- !u!1 &134554018
 GameObject:
   m_ObjectHideFlags: 0
@@ -9646,6 +9647,37 @@ RectTransform:
   m_AnchoredPosition: {x: -754.23315, y: -6}
   m_SizeDelta: {x: 382.0783, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &396636944
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 396636945}
+  m_Layer: 0
+  m_Name: SFXAudioSources_Default
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &396636945
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 396636944}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1733865124}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &400952479
 GameObject:
   m_ObjectHideFlags: 0
@@ -10983,8 +11015,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63011301e66203749a6abd01621f84e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FlowerSpawnZone
-  FlowerPrefab_Pollen: {fileID: 7348209433693976187, guid: 8d075e55d05ef7c4facc2b59f534f28c, type: 3}
-  FlowerPrefab_Nectar: {fileID: 7348209433693976187, guid: 95482600c231e5847bb15dd8b3659125, type: 3}
+  FlowerPrefab_Pollen: {fileID: 2034255064554436651, guid: 8d075e55d05ef7c4facc2b59f534f28c, type: 3}
+  FlowerPrefab_Nectar: {fileID: 2034255064554436651, guid: 95482600c231e5847bb15dd8b3659125, type: 3}
   spawnInterval: 1
   maxFlowers: 5
   Game: {fileID: 880668879}
@@ -13553,6 +13585,135 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 630621940}
   m_CullTransparentMesh: 1
+--- !u!1 &637357234
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 637357235}
+  - component: {fileID: 637357236}
+  m_Layer: 0
+  m_Name: Audio Source
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &637357235
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 637357234}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1733865124}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &637357236
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 637357234}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &643576592
 GameObject:
   m_ObjectHideFlags: 0
@@ -18056,14 +18217,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game
   Hive: {fileID: 133027694}
+  Garden: {fileID: 1949149806}
   SpawnZone: {fileID: 162854016}
   FlowerSpawnZone: {fileID: 486842633}
   Larvae:
-    _value: 0
+    _value: 8888888
   Bees:
-    _value: 0
+    _value: 88888888
   Pollen:
-    _value: 1000
+    _value: 8888888
   Nectar:
     _value: 0
   Honey:
@@ -23631,6 +23793,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1148895472}
   m_CullTransparentMesh: 1
+--- !u!1 &1151967128
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1151967129}
+  m_Layer: 0
+  m_Name: SFXAudioSources_Flowers
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1151967129
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1151967128}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1733865124}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1154585156
 GameObject:
   m_ObjectHideFlags: 0
@@ -34483,6 +34676,73 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1726173806}
   m_CullTransparentMesh: 1
+--- !u!1 &1733865122
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1733865124}
+  - component: {fileID: 1733865123}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1733865123
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1733865122}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 353fb217c42893a45839ec8036d90aab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AudioManager
+  PoolConfigs:
+  - Id: AUDIOPOOLID_DEFAULT
+    InitialSize: 10
+    MaxSize: 20
+    Parent: {fileID: 396636945}
+    DefaultVolume: 1
+    Spatial: 0
+  - Id: AUDIOPOOLID_PINS
+    InitialSize: 50
+    MaxSize: 100
+    Parent: {fileID: 1885709793}
+    DefaultVolume: 0.1
+    Spatial: 0
+  - Id: AUDIOPOOLID_FLOWER
+    InitialSize: 10
+    MaxSize: 50
+    Parent: {fileID: 1151967129}
+    DefaultVolume: 1
+    Spatial: 0
+--- !u!4 &1733865124
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1733865122}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 637357235}
+  - {fileID: 396636945}
+  - {fileID: 1885709793}
+  - {fileID: 1151967129}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1737480819
 GameObject:
   m_ObjectHideFlags: 0
@@ -35953,6 +36213,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FloatingTextManager
   FloatingTextPrefab: {fileID: 828000566874674748, guid: e07902aa81f6cf84d8546510051786c2, type: 3}
   Container: {fileID: 1772371584}
+  SupressText: 0
 --- !u!4 &1772371584
 Transform:
   m_ObjectHideFlags: 0
@@ -38869,6 +39130,37 @@ Transform:
   - {fileID: 1869192057}
   m_Father: {fileID: 1497252881}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1885709792
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1885709793}
+  m_Layer: 0
+  m_Name: SFXAudioSources_Pins
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1885709793
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1885709792}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1733865124}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1887055055
 GameObject:
   m_ObjectHideFlags: 0
@@ -40176,6 +40468,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Garden
   SpawnZone: {fileID: 162854016}
   GardenCamera: {fileID: 1154620160}
+  PinHit: {fileID: 8300000, guid: a6940739bc3ef404a8f1e7b861a235c4, type: 3}
+  FlowerHit: {fileID: 8300000, guid: 2af03d80fe1f141c294813a949084daf, type: 3}
 --- !u!1 &1955767403
 GameObject:
   m_ObjectHideFlags: 0
@@ -44252,3 +44546,4 @@ SceneRoots:
   - {fileID: 533391017}
   - {fileID: 1772371584}
   - {fileID: 1675832701}
+  - {fileID: 1733865124}

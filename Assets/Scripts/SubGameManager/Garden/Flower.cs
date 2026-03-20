@@ -8,6 +8,7 @@ public class Flower : MonoBehaviour
 	private Game _game;
 
 	public ResourceType ResourceType;
+	private Action _release;
 
 	private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -19,6 +20,8 @@ public class Flower : MonoBehaviour
 			int amount = bee.Mult;
 			_game.Gain(ResourceType, amount);
 			FloatingTextManager.Instance.ShowText(this.transform.position, $"+{amount}");
+
+			AudioManager.Instance.PlaySFX(_game.Garden.FlowerHit, AudioManager.AUDIOPOOLID_FLOWER);
 		}
 	}
 	internal void TakeDamage(int v)
@@ -27,7 +30,8 @@ public class Flower : MonoBehaviour
 		if (hp <= 0)
 		{
 			parentPin.OccupiedFlower = null;
-			Destroy(gameObject);
+			//Destroy(gameObject);
+			_release.Invoke();
 			_game.FlowerSpawnZone.FlowerDestroyed(this);
 		}
 	}
@@ -37,5 +41,10 @@ public class Flower : MonoBehaviour
         _game = game;
 		hp = game.PollenPerFlower;
 		parentPin = pin;
+	}
+
+	internal void SetRelease(Action release)
+	{
+		_release = release;
 	}
 }

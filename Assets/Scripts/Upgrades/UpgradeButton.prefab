@@ -673,6 +673,7 @@ MonoBehaviour:
   NameText: {fileID: 5477235489677482976}
   LevelText: {fileID: 3424886986358566935}
   CostsText: {fileID: 8130677907121732038}
+  UpgradeClip: {fileID: 8300000, guid: ead4301d054504edf807acce794a0179, type: 3}
 --- !u!114 &8538985746563071766
 MonoBehaviour:
   m_ObjectHideFlags: 0

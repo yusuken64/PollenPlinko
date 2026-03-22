@@ -19,9 +19,11 @@ public class Hive : MonoBehaviour, ISubGame
     public HiveItem BedPrefab;
     public HiveItem SciencePrefab;
 
+    public AudioClip EggHatch;
+
     public Camera GameCamera => HiveCamera;
 
-    public LayerMask HiveItemLayerMask;
+	public LayerMask HiveItemLayerMask;
     public LayerMask HexLayerMask;
 
     public MergeManager MergeManager;

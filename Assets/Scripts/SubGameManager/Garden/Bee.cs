@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class Bee : MonoBehaviour
 {
-	public Game Game { get; private set; }
-
 	public int hp = 3;
 
 	public GameObject BeeShadow;
@@ -15,17 +13,30 @@ public class Bee : MonoBehaviour
 
 	public int Mult;
 	public TextMeshPro Text;
+	public float YThreshold;
 
-	public Action Release { get; private set; }
+	public AudioClip AudioClip;
 
-	internal void Setup(Game game, int mult)
+	internal void Setup(int beeHitHP, int mult)
 	{
-		Game = game;
-		this.hp = game.BeeHitHP;
+		this.hp = beeHitHP;
 		Mult = mult;
 		Text.text = mult.ToString();
 		this.gameObject.SetActive(true);
 		Spawn();
+	}
+
+	private SimplePool<Bee> _pool;
+
+	public void SetPool(SimplePool<Bee> pool)
+	{
+		_pool = pool;
+	}
+
+	public void ReleaseToPool()
+	{
+		gameObject.SetActive(false);
+		_pool.Release(this);
 	}
 
 	internal void TakeDamage(int v)
@@ -38,6 +49,14 @@ public class Bee : MonoBehaviour
 		}
 	}
 
+	private void Update()
+	{
+		if (transform.localPosition.y < YThreshold)
+		{
+			Die();
+		}
+	}
+
 	public void Spawn()
 	{
 		isDead = false;
@@ -45,11 +64,11 @@ public class Bee : MonoBehaviour
 
 		gameObject.layer = _aliveLayer;
 
-		SetLayerRecursively(gameObject, _aliveLayer);
+		//SetLayerRecursively(gameObject, _aliveLayer);
 
 	}
 
-	private void Die()
+	public void Die()
 	{
 		isDead = true;
 		BeeShadow.gameObject.SetActive(true);
@@ -57,27 +76,24 @@ public class Bee : MonoBehaviour
 		// Change collision layer
 		gameObject.layer = _deadLayer;
 
-		// Optional: also change children layers if needed
-		SetLayerRecursively(gameObject, _deadLayer);
+		//// Optional: also change children layers if needed
+		//SetLayerRecursively(gameObject, _deadLayer);
+
+		//ReleaseToPool();
 	}
 
-	private void SetLayerRecursively(GameObject obj, int layer)
-	{
-		obj.layer = layer;
+	//private void SetLayerRecursively(GameObject obj, int layer)
+	//{
+	//	obj.layer = layer;
 
-		foreach (Transform child in obj.transform)
-		{
-			SetLayerRecursively(child.gameObject, layer);
-		}
-	}
-
-	internal void SetRelease(Action release)
-	{
-		Release = release;
-	}
+	//	foreach (Transform child in obj.transform)
+	//	{
+	//		SetLayerRecursively(child.gameObject, layer);
+	//	}
+	//}
 
 	private void OnCollisionEnter2D(Collision2D collision)
 	{
-		AudioManager.Instance.PlaySFX(Game.Garden.PinHit, AudioManager.AUDIOPOOLID_PINS);
+		AudioManager.Instance.PlaySFX(AudioClip, AudioManager.AUDIOPOOLID_PINS);
 	}
 }

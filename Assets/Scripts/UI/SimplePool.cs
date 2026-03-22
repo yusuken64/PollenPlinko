@@ -4,7 +4,12 @@ using System.Collections.Generic;
 public class SimplePool<T>
 {
     private readonly Func<T> _createFunc;
-    private readonly Stack<T> _stack = new Stack<T>();
+    private readonly Stack<T> _stack = new();
+    private readonly HashSet<T> _inPool = new();
+
+    public bool LimitCount = false;
+    public int Limit;
+    private int _count;
 
     public SimplePool(Func<T> createFunc)
     {
@@ -13,11 +18,26 @@ public class SimplePool<T>
 
     public T Get()
     {
-        return _stack.Count > 0 ? _stack.Pop() : _createFunc();
+        if (_stack.Count == 0)
+        {
+            if (LimitCount && _count >= Limit)
+                return default; // or throw / reuse depending on your design
+
+            var obj = _createFunc();
+            _count++;
+            return obj;
+        }
+
+        var pooled = _stack.Pop();
+        _inPool.Remove(pooled);
+        return pooled;
     }
 
     public void Release(T obj)
     {
+        if (!_inPool.Add(obj))
+            return; // already released
+
         _stack.Push(obj);
     }
 }

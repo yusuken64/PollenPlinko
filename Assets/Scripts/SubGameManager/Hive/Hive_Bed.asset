@@ -16,7 +16,7 @@ MonoBehaviour:
   Name: Bed
   Description: Increase Pollen Collection
   Max: 99
-  ResourceType: 2
+  ResourceType: 0
   ScalingMode: 1
   BaseCost: 1
   LinearIncrease: 5

@@ -104,12 +104,8 @@ public class SpawnZone : MonoBehaviour
 
         var maxLevel = Game.Hive.MergeManager.MaxLevelOf("bed");
 
-        bee.Setup(Game, maxLevel + 1);
-        bee.SetRelease(() =>
-        {
-            bee.gameObject.SetActive(false);
-            _pool.Release(bee);
-        });
+        bee.Setup(Game.BeeHitHP, maxLevel + 1);
+        bee.SetPool(_pool);
 
         return bee;
     }

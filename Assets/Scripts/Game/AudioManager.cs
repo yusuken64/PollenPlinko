@@ -53,7 +53,10 @@ public class AudioPool
 	public bool Spatial = false;
 
 	private List<AudioSource> sources = new List<AudioSource>();
-	
+
+	public bool CycleByIndex;
+	public int CycleIndex;
+
 	public void Initialize(GameObject owner)
 	{
 		for (int i = 0; i < InitialSize; i++)
@@ -79,19 +82,24 @@ public class AudioPool
 
 	public AudioSource GetAvailableSource(GameObject owner)
 	{
-		foreach (var source in sources)
-		{
-			if (!source.isPlaying)
-				return source;
-		}
+		//foreach (var source in sources)
+		//{
+		//	if (!source.isPlaying)
+		//		return source;
+		//}
 
 		// Expand if under limit
-		if (sources.Count < MaxSize)
+		//if (sources.Count < MaxSize)
+		//{
+		//	return CreateSource(owner);
+		//}
+
+		if (CycleByIndex)
 		{
-			return CreateSource(owner);
+			CycleIndex = (CycleIndex + 1) % sources.Count;
+			return sources[CycleIndex];
 		}
 
-		// Fallback: reuse oldest (or just first)
 		return null;
 	}
 }

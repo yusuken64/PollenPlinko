@@ -9,6 +9,7 @@ public class Flower : MonoBehaviour
 
 	public ResourceType ResourceType;
 	private Action _release;
+	private bool _isDead;
 
 	private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -26,13 +27,18 @@ public class Flower : MonoBehaviour
 	}
 	internal void TakeDamage(int v)
 	{
+		if (_isDead) return;
+
 		hp -= v;
 		if (hp <= 0)
 		{
+			_isDead = true;
 			parentPin.OccupiedFlower = null;
+			parentPin = null;
 			//Destroy(gameObject);
-			_release.Invoke();
 			_game.FlowerSpawnZone.FlowerDestroyed(this);
+			_release.Invoke();
+			_release = null;
 		}
 	}
 
@@ -41,6 +47,7 @@ public class Flower : MonoBehaviour
         _game = game;
 		hp = game.PollenPerFlower;
 		parentPin = pin;
+		_isDead = false;
 	}
 
 	internal void SetRelease(Action release)

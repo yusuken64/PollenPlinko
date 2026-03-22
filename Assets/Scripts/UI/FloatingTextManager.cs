@@ -26,6 +26,9 @@ public class FloatingTextManager : MonoBehaviour
 				return obj;
 			}
 		);
+
+		_pool.LimitCount = true;
+		_pool.Limit = 500;
 	}
 
 	public void ShowText(Vector3 worldPosition, string message)
@@ -35,8 +38,8 @@ public class FloatingTextManager : MonoBehaviour
 		var text = _pool.Get();
 
 		text.gameObject.SetActive(true);
-		text.Setup(worldPosition, message);
-		text.SetRelease(() => _pool.Release(text));
+		text.Setup(worldPosition, message, Color.black);
+		text.SetRelease(_pool.Release);
 		//text.PlayAndReturn(_pool);
 	}
 }

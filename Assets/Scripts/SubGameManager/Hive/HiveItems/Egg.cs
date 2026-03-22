@@ -14,6 +14,7 @@ public class Egg : HiveItem
 		Game.Larvae.Add(amount);
 		Destroy(gameObject);
 
+		AudioManager.Instance.PlaySFX(Game.Hive.EggHatch, AudioManager.AUDIOPOOLID_DEFAULT);
 		FloatingTextManager.Instance.ShowText(this.transform.position, $"+{amount}");
 	}
 }

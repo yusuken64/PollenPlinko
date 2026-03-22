@@ -114,18 +114,12 @@ public class FlowerSpawnZone : MonoBehaviour
         }
     }
 
-    private void Update()
-    {
-        FlowerText.text = $"Flowers { _activeFlowers.Count()} / {maxFlowers}";
-        FlowerFill.fillAmount = _timer / spawnInterval;
-    }
-
     public void SpawnFlowers()
     {
         _activeFlowers.Clear();
 
         var hiveUI = FindFirstObjectByType<HiveUI>(FindObjectsInactive.Include);
-        var flowers = hiveUI.AddedFlowers + 1;
+        var flowers = 1 + hiveUI.AddedFlowers;
         var flowers_nectar = hiveUI.AddedFlowersNectar;
 
         for (int i = 0; i < flowers; i++)

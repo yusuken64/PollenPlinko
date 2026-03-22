@@ -2774,6 +2774,7 @@ MonoBehaviour:
   FlowerNectarPrefab: {fileID: 1762740885441456105, guid: 0db81bf48366a964895bfa58d0ffb3f0, type: 3}
   BedPrefab: {fileID: 1725759577153395682, guid: f4469207c34df36438ca90dfe11cdfca, type: 3}
   SciencePrefab: {fileID: 6775636233258762910, guid: c10cd95f9c4c769468fce3e26002f158, type: 3}
+  EggHatch: {fileID: 8300000, guid: a35612ee89b9d4f84b35047cf76d4310, type: 3}
   HiveItemLayerMask:
     serializedVersion: 2
     m_Bits: 8192
@@ -18221,11 +18222,11 @@ MonoBehaviour:
   SpawnZone: {fileID: 162854016}
   FlowerSpawnZone: {fileID: 486842633}
   Larvae:
-    _value: 8888888
+    _value: 0
   Bees:
-    _value: 88888888
+    _value: 0
   Pollen:
-    _value: 8888888
+    _value: 0
   Nectar:
     _value: 0
   Honey:
@@ -24082,15 +24083,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 825299112125383257, guid: a488b0fcf1ae58447812816598815951, type: 3}
       propertyPath: m_Color.b
-      value: 0.2509804
+      value: 0.9607844
       objectReference: {fileID: 0}
     - target: {fileID: 825299112125383257, guid: a488b0fcf1ae58447812816598815951, type: 3}
       propertyPath: m_Color.g
-      value: 0.8431373
+      value: 0.9607844
       objectReference: {fileID: 0}
     - target: {fileID: 825299112125383257, guid: a488b0fcf1ae58447812816598815951, type: 3}
       propertyPath: m_Color.r
-      value: 1
+      value: 0.9607844
       objectReference: {fileID: 0}
     - target: {fileID: 942576695203121926, guid: a488b0fcf1ae58447812816598815951, type: 3}
       propertyPath: m_Pivot.x
@@ -24404,7 +24405,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!50 &1177518693
 Rigidbody2D:
   serializedVersion: 5
@@ -34712,18 +34713,24 @@ MonoBehaviour:
     Parent: {fileID: 396636945}
     DefaultVolume: 1
     Spatial: 0
+    CycleByIndex: 1
+    CycleIndex: 0
   - Id: AUDIOPOOLID_PINS
     InitialSize: 50
     MaxSize: 100
     Parent: {fileID: 1885709793}
     DefaultVolume: 0.1
     Spatial: 0
+    CycleByIndex: 1
+    CycleIndex: 0
   - Id: AUDIOPOOLID_FLOWER
     InitialSize: 10
     MaxSize: 50
     Parent: {fileID: 1151967129}
     DefaultVolume: 1
     Spatial: 0
+    CycleByIndex: 1
+    CycleIndex: 0
 --- !u!4 &1733865124
 Transform:
   m_ObjectHideFlags: 0
